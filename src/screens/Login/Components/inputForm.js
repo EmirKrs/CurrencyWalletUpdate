@@ -12,6 +12,7 @@ const InputForm = ({emailText, passwordText, setEmailText, setPasswordText}) => 
         value={emailText}
         style={styles.input}
         mode="outlined"
+        keyboardType='email-address'
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
         onChangeText={(emailText) => setEmailText(emailText)}
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   input: {
     width: "90%",

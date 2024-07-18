@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Item from "../Details/Item";
 import appSettings from '../../../settings';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }) => {
 
@@ -27,14 +28,17 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
+  
+
   const fetchData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies`;
+    const token = await AsyncStorage.getItem('token');
 
     fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${appSettings.Token}`,
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     })
@@ -102,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#FFFFFF'
   },
 
   flatListContainer: {
