@@ -10,7 +10,6 @@ const ButtonForm = ({ navigation, handleLogin }) => {
 
   return (
     <View style={styles.container}>
-
       <TouchableOpacity 
       style={styles.buttonLogin} 
       onPress={handleLogin}>
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
   },
   buttonLogin: {
     width: "90%",

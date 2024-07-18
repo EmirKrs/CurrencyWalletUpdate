@@ -1,16 +1,20 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React, { useEffect } from "react";
 import * as Animatable from "react-native-animatable";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import appSettings from "../../settings";
 
 const SplashScreen = ({ navigation }) => {
 
-  useEffect(() => {
+  const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/token/refresh`;
+  
+  useEffect(()=> {
     const timer = setTimeout(() => {
-      navigation.replace("Login");
+      checkTokenValidity();
     }, 3000);
-
+    
     return () => clearTimeout(timer);
-  }, [navigation]);
+  }, []);
 
 
   useEffect(() => {
@@ -23,6 +27,62 @@ const SplashScreen = ({ navigation }) => {
     imageRef.zoomIn(3000);
   };
 
+  const checkTokenValidity = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const expireDateString = await AsyncStorage.getItem('expireDate');
+
+      if (token && expireDateString) {
+        const now = new Date();
+        const expireDate = new Date(expireDateString);
+        const diffInMillis = expireDate.getTime() - now.getTime();
+        const diffInHours = diffInMillis / (1000 * 60 * 60);
+
+        if (diffInHours <= 3) {
+          refreshToken(token);
+        } 
+        navigation.replace('Tabs');
+      } else {
+        navigation.replace('Login');
+      }
+
+    } catch (error) {
+      console.error('Token validation error:', error);
+      // Hata durumunu yönetme
+      navigation.replace('Login');
+    }
+  };
+
+
+  const refreshToken = async (token) => {
+    console.log(token);
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      //console.log(data);
+      if (!response.ok) {
+        throw new Error('HTTP error ' + data);
+      }
+
+      const newToken = data.token;
+      const newExpireDate = data.expireDate;
+
+      await AsyncStorage.setItem('token', newToken);
+      await AsyncStorage.setItem('expireDate', newExpireDate);
+
+    } catch (error) {
+      console.error('Token refresh error:', error);
+      navigation.replace('Login');
+    }
+  };
+
+  
   return (
     <View style={styles.container}>
 
@@ -41,7 +101,7 @@ const SplashScreen = ({ navigation }) => {
         animation="zoomIn"
         duration={1000}>
 
-        Yükleniyor...
+        Yükleniyor
       </Animatable.Text>
     </View>
   );

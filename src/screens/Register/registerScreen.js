@@ -68,9 +68,9 @@ const RegisterScreen = ({ navigation }) => {
     } 
 
     const postData = async () => {
-      const url = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
+      const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
       try {
-        const response = await fetch(url, {
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const RegisterScreen = ({ navigation }) => {
           setError(responseData.Messages?.[0]);
         } else {
           ToastAndroid.show(`${responseData.messages?.[0]}`, ToastAndroid.SHORT);
-          console.log(responseData)
+          //console.log(responseData)
           navigation.navigate("Login");
         }
       } catch (error) {

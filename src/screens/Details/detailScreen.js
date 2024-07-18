@@ -14,6 +14,7 @@ import ModalComponent from "./modal";
 import {LineChart} from "react-native-chart-kit";
 import appSettings from "../../../settings";
 import DetailItem from "./detailItem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailScreen = ({ route, navigation, }) => {
   const data = route.params;
@@ -56,14 +57,17 @@ const DetailScreen = ({ route, navigation, }) => {
     fetchChartData();
   }, []);
 
+  
+
   const fetchData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
-
+    const token = await AsyncStorage.getItem('token');
+    
     fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${appSettings.Token}`,
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
     })
@@ -87,11 +91,13 @@ const DetailScreen = ({ route, navigation, }) => {
 
   const fetchChartData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/charts/daily-currency-data?currencyCode=${data.code}&buySellType=1&day=10`;
+    const token = await AsyncStorage.getItem('token');
+
     fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${appSettings.Token}`
+        Authorization: `Bearer ${token}`
       },
       credentials: "include",
     })
