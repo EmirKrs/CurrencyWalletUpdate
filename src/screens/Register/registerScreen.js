@@ -102,8 +102,8 @@ const RegisterScreen = ({ navigation }) => {
         if (!responseData.isSuccess) {
           setError(responseData.Messages?.[0]);
         } else {
-          ToastAndroid.show(`${responseData.messages?.[0]}`, ToastAndroid.SHORT);
-          //console.log(responseData)
+          ToastAndroid.show('Kayıt işlemi başarılı!', ToastAndroid.SHORT);
+          console.log(responseData)
           navigation.navigate("Login");
         }
       } catch (error) {
@@ -112,8 +112,6 @@ const RegisterScreen = ({ navigation }) => {
     };
 
     postData();
-
-    
     setError("");
   };
 

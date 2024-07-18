@@ -71,7 +71,7 @@ const Item = ({ item, navigation }) => {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log(data.messages);
       ToastAndroid.show(`${item.code} para birimi portföyden kaldırıldı`, ToastAndroid.SHORT);
   
       if (!response.ok) {
