@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import Item from "../Details/Item";
+import Item from "./Item";
 import appSettings from '../../../settings';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
