@@ -158,10 +158,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     marginHorizontal: 10,
-    marginTop: 10,
+    marginBottom: 10,
     padding: 5,
     flexDirection: "row",
     backgroundColor: "#F3F8F8",
+    shadowColor: "#000",
+    elevation: 2,
   },
   headerTopContainer: {
     flexDirection: "row",

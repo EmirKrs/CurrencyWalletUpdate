@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
       textContainer:{
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 20,
+        marginLeft: 10,
       },
       voteContainer: {
         flexDirection: 'row',

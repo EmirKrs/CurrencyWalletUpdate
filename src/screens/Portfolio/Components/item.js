@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 
-const Item = ({ item }) => {
+const Item = ({ item,}) => {
 
   const formatNumber = (number) => {
     return number.toFixed(2);
@@ -9,6 +9,7 @@ const Item = ({ item }) => {
 
   return (
     <View style= {styles.container}>
+   
       <View style= {styles.itemContainer}>
         <View style={styles.currencyInfo}>
         <Text style={styles.textCode}>{item.currencyCode}</Text>
@@ -20,6 +21,7 @@ const Item = ({ item }) => {
         <Text style={styles.text}>%{item.rate}</Text>
         </View>
       </View>
+
     </View>
   )
 }
@@ -33,7 +35,10 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
         marginHorizontal: 10,
-        backgroundColor: '#F3F8F8',
+        borderRadius: 20,
+        backgroundColor: '#FFFFFF',
+        shadowColor: "#000",
+        elevation: 3,
     },
     currencyInfo:{
       width: '30%',
