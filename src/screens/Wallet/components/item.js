@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
       title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "bold",
         marginBottom: 8,
       },
       content: {
-        fontSize: 16,
+        fontSize: 14,
         color: "#000000",
       },
 });

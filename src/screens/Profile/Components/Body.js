@@ -4,7 +4,8 @@ import React from "react";
 const Body = ({ userData }) => {
   return (
     <View style={styles.container}>
-      <View style={{ height: "80%", justifyContent: 'space-around',}}>
+      
+      <View style={{justifyContent: 'space-around', height: '90%'}}>
         <View style={styles.row}>
           <Text style={styles.label}>Ad</Text>
           <Text style={styles.value}>{userData.name}</Text>
@@ -29,7 +30,7 @@ const Body = ({ userData }) => {
 
       <View style={styles.updateBtnContainer}>
         <TouchableOpacity style={styles.updateButton}>
-          <Text style={styles.updateText}>Update Profile</Text>
+          <Text style={styles.updateText}>Güncelle</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -40,20 +41,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10,
-    width: "100%",
+    marginHorizontal: 10,
     borderRadius: 30,
     padding: 10,
-    backgroundColor: "#F3F8F8",
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    elevation: 4,
   },
   row: {
-    flexDirection: "row",
-    width: "100%",
-    paddingHorizontal: 10,
+    height: '15%',
+    padding: 10,
+    paddingLeft: 10,
+   
   },
   label: {
-    width: "50%",
-    color: "#686868",
-    fontSize: 18,
+    color: "#9D9D9D",
+    fontSize: 14,
   },
   value: {
     flex: 1,
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   updateBtnContainer:{
-     height: "20%", 
+     height: '10%',
      justifyContent: 'center', 
      alignItems: 'center'
   },

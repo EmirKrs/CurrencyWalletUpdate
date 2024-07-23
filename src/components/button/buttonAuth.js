@@ -1,19 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const ButtonForm = ({navigation , handleRegister}) => {
-
-
+const ButtonAuth = ({title, onPress, color}) => {
   return (
     <View style={styles.container}>
-
-    <TouchableOpacity
-      style={styles.buttonRegister}
-      onPress={handleRegister}>
-      <Text style={styles.buttonText}>Kayıt Ol</Text>
-    </TouchableOpacity>
-    
-  </View>
+      <TouchableOpacity 
+      style={[styles.button, {backgroundColor: color}]} 
+      onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    </View>
   )
 };
 
@@ -22,14 +18,13 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
+        marginVertical: 10,
       },
-      buttonRegister: {
+      button: {
         width: "90%",
         height: 50,
-        backgroundColor: "#FF7F3E",
         justifyContent: "center",
         borderRadius: 5,
-        marginTop: 10,
       },
       buttonText: {
         fontSize: 20,
@@ -39,4 +34,4 @@ const styles = StyleSheet.create({
       },
 });
 
-export default ButtonForm;
+export default ButtonAuth;

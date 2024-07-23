@@ -12,6 +12,7 @@ import ProfileScreen from './src/screens/Profile/profileScreen';
 import PortfolioScreen from './src/screens/Portfolio/portfolioScreen';
 import LoginScreen from './src/screens/Login/loginScreen';
 import RegisterScreen from './src/screens/Register/registerScreen';
+import PaymentScreen from './src/screens/Payment/PaymentScreen';
 
 import SplashScreen from './src/screens/splashScreen';
 
@@ -70,6 +71,7 @@ function AppStack() {
       <Stack.Screen name="Login" component={LoginScreen}  options={{ headerShown: false }}/>
       <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Tabs" component={TabNavigator}  options={{ headerShown: false }}/>
+      <Stack.Screen name="Payment" component={PaymentScreen}  options={{ headerTitleAlign: 'center' }}/>
     </Stack.Navigator>
   );
 }
