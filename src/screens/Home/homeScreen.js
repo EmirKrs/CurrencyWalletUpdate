@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: '#FFFFFF'
   },
-
   flatListContainer: {
     flex: 1,
     justifyContent: "space-between",

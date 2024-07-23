@@ -8,11 +8,10 @@ import {
   ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
-import appSettings from "../../../settings";
-
 //Components
-import InputForm from "./Components/inputForm";
-import ButtonForm from "./Components/buttonForm";
+import appSettings from "../../../settings";
+import InputAuth from "../../components/input/inputAuth";
+import ButtonAuth from "../../components/button/buttonAuth";
 
 const RegisterScreen = ({ navigation }) => {
   const [nameText, setNameText] = useState("");
@@ -45,27 +44,30 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegister = () => {
-     if(!validatePhone(phoneText)) {
-      setError('Lütfen geçerli bir telefon numarası girin.');
+    if (!validatePhone(phoneText)) {
+      setError("Lütfen geçerli bir telefon numarası girin.");
       return;
-    } 
+    }
 
     if (!validateEmail(emailText)) {
       setError("Lütfen Geçerli bir email adresi girin.");
       return;
-    } 
+    }
 
     if (!validatePassword(passwordText)) {
       setError(
         "Şifreniz 6 karakterden uzun olmalı ve büyük harf, küçük harf, rakam içermelidir."
       );
       return;
-    } 
+    }
 
     if (!validatePasswordCon(passwordText, passwordConText)) {
       setError("Şifreler uyuşmuyor.");
       return;
-    } 
+    }
+
+    postData();
+    setError("");
 
     const postData = async () => {
       const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
@@ -89,11 +91,15 @@ const RegisterScreen = ({ navigation }) => {
 
         if (!response.ok) {
           if (responseData.Messages?.[0]) {
-            ToastAndroid.show(`${responseData.Messages[0]}`, ToastAndroid.SHORT);
-          }
-          else
-          {
-            ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
+            ToastAndroid.show(
+              `${responseData.Messages[0]}`,
+              ToastAndroid.SHORT
+            );
+          } else {
+            ToastAndroid.show(
+              `Beklenmedik bir hata alındı.`,
+              ToastAndroid.SHORT
+            );
           }
 
           return;
@@ -102,17 +108,14 @@ const RegisterScreen = ({ navigation }) => {
         if (!responseData.isSuccess) {
           setError(responseData.Messages?.[0]);
         } else {
-          ToastAndroid.show('Kayıt işlemi başarılı!', ToastAndroid.SHORT);
-          console.log(responseData)
+          ToastAndroid.show("Kayıt işlemi başarılı!", ToastAndroid.SHORT);
+          console.log(responseData);
           navigation.navigate("Login");
         }
       } catch (error) {
         console.error("Hata:", error);
       }
     };
-
-    postData();
-    setError("");
   };
 
   return (
@@ -125,26 +128,67 @@ const RegisterScreen = ({ navigation }) => {
           ></Image>
         </View>
 
-        <InputForm
-          nameText={nameText}
-          surnametext={surnametext}
-          phoneText={phoneText}
-          usernameText={usernameText}
-          emailText={emailText}
-          passwordText={passwordText}
-          passwordConText={passwordConText}
-          setNameText={setNameText}
-          setSurnameText={setSurnameText}
-          setPhoneText={setPhoneText}
-          setUsernameText={setUsernameText}
-          setEmailText={setEmailText}
-          setPasswordText={setPasswordText}
-          setPasswordConText={setPasswordConText}
+        <InputAuth
+          label={"Ad"}
+          value={nameText}
+          keyboardType={"default"}
+          secureTextEntry={false}
+          onchangeText={(nameText) => setNameText(nameText)}
+        />
+        <InputAuth
+          label={"Soyad"}
+          value={surnametext}
+          keyboardType={"default"}
+          secureTextEntry={false}
+          onchangeText={(surnametext) => setSurnameText(surnametext)}
+        />
+        <InputAuth
+          label={"Telefon"}
+          value={phoneText}
+          maxLength={11}
+          keyboardType={"phone-pad"}
+          secureTextEntry={false}
+          onchangeText={(phoneText) => setPhoneText(phoneText)}
+        />
+        <InputAuth
+          label={"Kullanıcı Adı"}
+          value={usernameText}
+          keyboardType={"default"}
+          secureTextEntry={false}
+          onchangeText={(usernameText) => setUsernameText(usernameText)}
+        />
+
+        <InputAuth
+          label={"Email"}
+          value={emailText}
+          keyboardType={"email-address"}
+          secureTextEntry={false}
+          onchangeText={(emailText) => setEmailText(emailText)}
+        />
+
+        <InputAuth
+          label={"Şifre"}
+          value={passwordText}
+          keyboardType={"default"}
+          secureTextEntry={true}
+          onchangeText={(passwordText) => setPasswordText(passwordText)}
+        />
+        <InputAuth
+          label={"Şifre Onay"}
+          value={passwordConText}
+          keyboardType={"default"}
+          secureTextEntry={true}
+          onchangeText={(passwordConText) =>
+            setPasswordConText(passwordConText)
+          }
         />
 
         <Text style={styles.error}>{error}</Text>
 
-        <ButtonForm navigation={navigation} handleRegister={handleRegister} />
+        <ButtonAuth
+        title={'Kayıt Ol'}
+        onPress={handleRegister}
+        color={'#FF7F3E'}/>
       </SafeAreaView>
     </ScrollView>
   );

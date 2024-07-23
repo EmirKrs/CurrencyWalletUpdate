@@ -111,8 +111,8 @@ const ModalComponent = ({
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
+        
       <KeyboardAvoidingView style={styles.modalOverlay}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
