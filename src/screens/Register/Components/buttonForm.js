@@ -10,7 +10,7 @@ const ButtonForm = ({navigation , handleRegister}) => {
     <TouchableOpacity
       style={styles.buttonRegister}
       onPress={handleRegister}>
-      <Text style={styles.buttonText}>Register</Text>
+      <Text style={styles.buttonText}>Kayıt Ol</Text>
     </TouchableOpacity>
     
   </View>

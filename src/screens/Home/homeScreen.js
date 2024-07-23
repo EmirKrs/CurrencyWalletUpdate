@@ -77,7 +77,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.flatListContainer}>
-      <View style = {styles.container}>
+      <View style = {styles.textContainer}>
         <Text style = {styles.text}>Son Güncelleme : {formattedTime}</Text>
       </View>
       <FlatList
@@ -96,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  textContainer: {
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',

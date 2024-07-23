@@ -15,6 +15,7 @@ const InputForm = ({emailText, passwordText, setEmailText, setPasswordText}) => 
         keyboardType='email-address'
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(emailText) => setEmailText(emailText)}
       />
       <TextInput
@@ -25,6 +26,7 @@ const InputForm = ({emailText, passwordText, setEmailText, setPasswordText}) => 
         outlineColor="#FF7F3E"
         secureTextEntry={true}
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(passwordText) => setPasswordText(passwordText)}
       />
       

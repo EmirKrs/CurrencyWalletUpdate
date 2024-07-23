@@ -28,6 +28,7 @@ const InputForm = ({
         mode="outlined"
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(nameText) => setNameText(nameText)}
       />
       <TextInput
@@ -37,6 +38,7 @@ const InputForm = ({
         mode="outlined"
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(surnameText) => setSurnameText(surnameText)}
       />
       <TextInput
@@ -48,6 +50,7 @@ const InputForm = ({
         outlineColor="#FF7F3E"
         maxLength={11}
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(phoneText) => setPhoneText(phoneText)}
       />
       <TextInput
@@ -57,6 +60,7 @@ const InputForm = ({
         mode="outlined"
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(usernameText) => setUsernameText(usernameText)}
       />
       <TextInput
@@ -67,6 +71,7 @@ const InputForm = ({
         keyboardType='email-address'
         outlineColor="#FF7F3E"
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(emailText) => setEmailText(emailText)}
       />
       <TextInput
@@ -77,6 +82,7 @@ const InputForm = ({
         outlineColor="#FF7F3E"
         secureTextEntry={true}
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(passwordText) => setPasswordText(passwordText)}
       />
       <TextInput
@@ -87,6 +93,7 @@ const InputForm = ({
         outlineColor="#FF7F3E"
         secureTextEntry={true}
         activeOutlineColor="#2A629A"
+        theme={{colors: {background: '#FFFFFF'}}}
         onChangeText={(passwordConText) => setPasswordConText(passwordConText)}
       />
     </View>

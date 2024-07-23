@@ -13,13 +13,13 @@ const ButtonForm = ({ navigation, handleLogin }) => {
       <TouchableOpacity 
       style={styles.buttonLogin} 
       onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Giriş</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.buttonRegister}
         onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
+        <Text style={styles.buttonText}>Kayıt</Text>
       </TouchableOpacity>
       
     </View>

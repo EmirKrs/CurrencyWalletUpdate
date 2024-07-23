@@ -4,7 +4,6 @@ import { LineChart } from 'react-native-chart-kit';
 
 const Chart = ({chartData}) => {
 
-
   return (
     <View style= {styles.chartsContainer}>
     <LineChart
