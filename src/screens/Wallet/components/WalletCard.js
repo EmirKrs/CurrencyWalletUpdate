@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
-const WalletCard = () => {
+const WalletCard = ({data}) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>AAAA</Text>
-      <Text style={styles.content}>BBBB</Text>
+      <Text style={styles.title}>{data.availableBalance}₺</Text>
+      <Text style={styles.content}>{data.walletBalance}</Text>
     </View>
   );
 };

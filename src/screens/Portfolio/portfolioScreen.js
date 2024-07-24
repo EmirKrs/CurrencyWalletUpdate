@@ -15,6 +15,7 @@ const PortfolioScreen = () => {
 
   useFocusEffect(
     React.useCallback(() => {
+      setLoading(true);
       fetchPortfolios(); 
     }, [])
   );

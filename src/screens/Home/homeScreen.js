@@ -25,6 +25,7 @@ const HomeScreen = ({ navigation }) => {
 
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
   }, []);
 

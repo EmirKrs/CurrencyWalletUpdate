@@ -68,54 +68,46 @@ const RegisterScreen = ({ navigation }) => {
 
     postData();
     setError("");
+  };
 
-    const postData = async () => {
-      const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
-      try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: nameText,
-            surname: surnametext,
-            emailAddress: emailText,
-            phoneNumber: phoneText,
-            username: usernameText,
-            password: passwordText,
-          }),
-        });
+  const postData = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: nameText,
+          surname: surnametext,
+          emailAddress: emailText,
+          phoneNumber: phoneText,
+          username: usernameText,
+          password: passwordText,
+        }),
+      });
 
-        const responseData = await response.json();
+      const responseData = await response.json();
 
-        if (!response.ok) {
-          if (responseData.Messages?.[0]) {
-            ToastAndroid.show(
-              `${responseData.Messages[0]}`,
-              ToastAndroid.SHORT
-            );
-          } else {
-            ToastAndroid.show(
-              `Beklenmedik bir hata alındı.`,
-              ToastAndroid.SHORT
-            );
-          }
-
-          return;
-        }
-
-        if (!responseData.isSuccess) {
-          setError(responseData.Messages?.[0]);
+      if (!response.ok) {
+        if (responseData.Messages?.[0]) {
+          ToastAndroid.show(`${responseData.Messages[0]}`,ToastAndroid.SHORT);
         } else {
-          ToastAndroid.show("Kayıt işlemi başarılı!", ToastAndroid.SHORT);
-          console.log(responseData);
-          navigation.navigate("Login");
+          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
         }
-      } catch (error) {
-        console.error("Hata:", error);
+        return;
       }
-    };
+      if (!responseData.isSuccess) {
+        setError(responseData.Messages?.[0]);
+      } else {
+        ToastAndroid.show("Kayıt işlemi başarılı!", ToastAndroid.SHORT);
+        console.log(responseData);
+        navigation.navigate("Login");
+      }
+    } catch (error) {
+      console.error("Hata:", error);
+    }
   };
 
   return (

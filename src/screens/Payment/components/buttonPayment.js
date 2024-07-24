@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity,  } from 'react-native'
 import React from 'react'
 
-const ButtonPayment = ({ title, onPress }) => {
+const ButtonPayment = ({ title, color, onPress }) => {
   return (
    <>
     <TouchableOpacity
     onPress={onPress}
-    style={styles.button}>
+    style={[styles.button, {backgroundColor: color}]}>
       <Text style={styles.buttonTitle}>{title}</Text>
     </TouchableOpacity>
    </>
@@ -15,11 +15,11 @@ const ButtonPayment = ({ title, onPress }) => {
 };
 const styles = StyleSheet.create({
 button:{
-backgroundColor: '#686868',
 padding: 10,
 marginTop: 10,
+marginHorizontal: 20,
 borderRadius: 15,
-width: '40%',
+width: '30%',
 alignItems: 'center',
 justifyContent: 'center',
 },
