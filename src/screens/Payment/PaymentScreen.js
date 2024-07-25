@@ -16,7 +16,7 @@ import ButtonPayment from "./components/buttonPayment";
 import HeaderPayment from "./components/headerPayment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PaymentScreen = ({ navigation }) => {
+const PaymentScreen = ({ navigation, route }) => {
   const [amount, setAmount] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardDate, setCardDate] = useState("");
@@ -25,6 +25,7 @@ const PaymentScreen = ({ navigation }) => {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
 
+  const { showComponent } = route.params || {};
 
   const handlePay = () => {
     if (amount == '' || cardNumber== '' || cardDate == '' || cardSecure== '') {
@@ -35,7 +36,9 @@ const PaymentScreen = ({ navigation }) => {
   };
 
   const handleCancel = () => {
-    navigation.replace("Tabs");
+    navigation.replace('Tabs', {
+      screen: 'Wallet',
+    });
   };
 
   const handleModalConfirm = () => {
@@ -125,19 +128,25 @@ const PaymentScreen = ({ navigation }) => {
       console.error('Buy Balance Error:', error);
     }
   };
+
+  const handleAmountChange = (text) => {
+    if (/^\d*$/.test(text)) {
+      setAmount(text);
+    }
+  };
   
 
   return (
     <View style={styles.container}>
-      <HeaderPayment />
+      {showComponent && <HeaderPayment />}
 
       <View style={styles.inputContainer}>
         <InputPayment
           title={"Tutar"}
           value={amount}
-          maxLength={7}
+          maxLength={9}
           placeHolder={'Tutar'}
-          onChangeText={(amount) => setAmount(amount)}
+          onChangeText={handleAmountChange}
         />
 
         <InputPayment

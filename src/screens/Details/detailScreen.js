@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import appSettings from "../../../settings";
@@ -28,26 +29,29 @@ const DetailScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const [currencyData, setCurrencyData] = useState("");
   const [chartData, setChartData] = useState("");
+  const [isSale, setIsSale] = useState(true);
 
   const formatNumber = (number) => {
     return number.toFixed(2);
   };
 
   const openModal = (buttonType) => {
-    if (buttonType === "Al") {
+    if (buttonType == false) {
       setModalTitle("Alış İşlemi Kur Bilgileri");
       setModalBuyTitle("Banka Satış");
       setModalBuy(formatNumber(data.selling));
-    } else if (buttonType === "Sat") {
+      setIsSale(false);
+    } else if (buttonType == true) {
       setModalTitle("Satış İşlemi Kur Bilgileri");
       setModalBuyTitle("Banka Alış");
       setModalBuy(formatNumber(data.buying));
+      setIsSale(true);
     }
 
     setModalVisible(true);
   };
 
-  const fetchData = async () => {
+  const fetchCurrencyData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
     const token = await AsyncStorage.getItem("token");
 
@@ -104,9 +108,10 @@ const DetailScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchCurrencyData();
     fetchChartData();
   }, []);
+
 
 
   if (loading) {
@@ -145,11 +150,11 @@ const DetailScreen = ({ route, navigation }) => {
       <ModalComponent
         data={data}
         visible={modalVisible}
-        setVisible={setModalVisible}
-        onClose={() => setModalVisible(false)}
+        setModalVisible={setModalVisible}
+        modalBuyTitle={modalBuyTitle}
         title={modalTitle}
-        buyTitle={modalBuyTitle}
         buy={modalBuy}
+        isSale={isSale}
         navigation={navigation}
       ></ModalComponent>
     </SafeAreaView>

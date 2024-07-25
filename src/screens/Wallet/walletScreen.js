@@ -13,13 +13,12 @@ const WalletScreen = ({navigation}) => {
   const [walletData, setWalletData] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const handleUp = () => {
-    ToastAndroid.show("Butona basıldı", ToastAndroid.SHORT);
+  const handleAddMoney = () => {
+    navigation.navigate('Payment', {showComponent: false});
   };
 
-  const handleDown = () => { 
+  const handleWithdrawMoney = () => { 
     ToastAndroid.show('Butona Basıldı', ToastAndroid.SHORT)
-
   };
 
 
@@ -48,7 +47,7 @@ const WalletScreen = ({navigation}) => {
       return false;
 
     } finally{
-      setLoading(false);
+      //setLoading(false);
     }
   };
 
@@ -77,7 +76,7 @@ const WalletScreen = ({navigation}) => {
     } catch (error) {
       console.error('Wallet Fetch Error:', error);
     } finally{
-      setLoading(false);
+      //setLoading(false);
     }
   };
 
@@ -90,6 +89,7 @@ const WalletScreen = ({navigation}) => {
 
         if (walletExist) {
           await fetchWallet();
+          setLoading(false);
         } 
         else{
           navigation.navigate('Payment');
@@ -119,13 +119,13 @@ const WalletScreen = ({navigation}) => {
           title={"Yükle"}
           icon={"arrow-up"}
           backgroundColor={"#A5DD9B"}
-          onPress={handleUp}
+          onPress={handleAddMoney}
         />
         <ButtonCard
           title={"Çek"}
           icon={"arrow-down"}
           backgroundColor={"#D37676"}
-          onPress={handleDown}
+          onPress={handleWithdrawMoney}
         />
       </View>
 
@@ -135,7 +135,7 @@ const WalletScreen = ({navigation}) => {
       
       <FlatList
       data={walletData.details}
-      renderItem={() => <Item />}
+      renderItem={({item}) => <Item item={item}/>}
       keyExtractor={item => item.id}/>
       
     </View>

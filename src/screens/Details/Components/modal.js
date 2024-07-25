@@ -7,103 +7,142 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Alert,
+  ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import appSettings from "../../../../settings";
 
 const ModalComponent = ({
   data,
   visible,
-  setVisible,
-  onClose,
+  setModalVisible,
+  modalBuyTitle,
   title,
-  buyTitle,
   buy,
-  navigation,
+  isSale,
+  navigation
 }) => {
-  const [money, setMoney] = useState("0,00 TL");
-  const [currency, setCurrency] = useState(`0,00 ${data.code}`);
+  const [unit, setUnit] = useState("");
+  const [currency, setCurrency] = useState('');
 
-  const handleFocusMoney = () => {
-    if (money === "0,00 TL") {
-      setMoney(",00 TL");
-    }
+  const closeModal = () => {
+    setModalVisible(false);
+    setUnit('');
+    setCurrency('');
   };
 
-  const handleFocusCurrency = () => {
-    if (currency === `0,00 ${data.code}`) {
-      setCurrency(`,00 ${data.code}`);
-    }
-  };
-
-  const handleChangeMoney = (text) => {
-    if (text === "") {
-      setMoney("0,00 TL");
+  const handleAmountChange = (text) => {
+    let filteredText = text.replace(/[^0-9]/g, '');
+    if(isSale){
+      const numericValue = parseFloat(filteredText) || 0;
+      setUnit(filteredText);
+      setCurrency((numericValue * data.buying).toFixed(2));
     } else {
-      // Virgülün solundaki 0'ı silme işlemi
-      let newValue = text.replace(/^0+(?!$)/, "");
-      setMoney(newValue === "" ? "0" : newValue);
+      const numericValue = parseFloat(filteredText) || 0;
+      setUnit(filteredText);
+      setCurrency((numericValue * data.selling).toFixed(2));
+    }
+
+  };
+
+  const fetchBuyCurrency = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/buy-currency`;
+    const token = await AsyncStorage.getItem('token');
+
+    try{
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+           Authorization: `Bearer ${token}`, 
+        },
+        body: JSON.stringify({
+          currencyId: `${data.id}`,
+          unit: unit,
+        }),
+      });
+
+      const res = await response.json();
+      console.log(res);
+
+      if(!response.ok){
+        if (res.Messages?.[0]) {
+          ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
+        }
+        return;
+      }
+      if (!res.isSuccess) {
+        ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show(`${res.messages[0]}`, ToastAndroid.SHORT);
+  
+        navigation.navigate("Wallet");
+      }
+
+    }catch(error){
+      console.error('Buy Currency Error:', error);
     }
   };
 
-  const handleChangeCurrency = (text) => {
-    if (text === "") {
-      setCurrency(`0,00 ${data.code}`);
-    } else {
-      // Virgülün solundaki 0'ı silme işlemi
-      let newValue = text.replace(/^0+(?!$)/, "");
-      setCurrency(newValue === "" ? "0" : newValue);
-    }
-  };
+  const fetchSellCurrency = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/sell-currency`;
+    const token = await AsyncStorage.getItem('token');
 
-  const handleClose = () => {
-    onClose();
-    setMoney("0,00 TL");
-    setCurrency(`0,00 ${data.code}`);
+    try{
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+           Authorization: `Bearer ${token}`, 
+        },
+        body: JSON.stringify({
+          currencyId: `${data.id}`,
+          unit: unit,
+        }),
+      });
+
+      const res = await response.json();
+
+
+      if(!response.ok){
+        if (res.Messages?.[0]) {
+          ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
+        }
+        return;
+      }
+      if (!res.isSuccess) {
+        ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show(`${res.messages[0]}`, ToastAndroid.SHORT);
+        console.log(res);
+        navigation.navigate("Wallet");
+      }
+      
+
+    }catch(error){
+      console.error('Sell Currency Error:', error);
+    }
   };
 
   const modalContinueButton = () => {
-    if (buyTitle === "Banka Alış") {
-      modalSellProcess();
-    } else {
-      modalBuyProcess();
+    if(unit == '' || unit == 0){
+      ToastAndroid.show('Adet alanı boş olamaz',ToastAndroid.SHORT);
+      return;
     }
-  };
-
-  const modalSellProcess = () => {
-    setVisible(false);
-    navigation.navigate("Wallet");
-
-    Alert.alert(
-      "",
-      `Satış işlemi ${data.buying} fiyatı üzerinden gerçekleştirildi.`,
-      [
-        {
-          text: "Tamam",
-          onPress: () => console.log("Tamam pressed"),
-          style: "cancel",
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
-  const modalBuyProcess = () => {
-    setVisible(false);
-    navigation.navigate("Wallet");
-
-    Alert.alert(
-      "",
-      `Alış işlemi ${data.selling} fiyatı üzerinden gerçekleştirildi.`,
-      [
-        {
-          text: "Tamam",
-          onPress: () => console.log("Tamam pressed"),
-          style: "cancel",
-        },
-      ],
-      { cancelable: false }
-    );
+    if (modalBuyTitle === "Banka Alış") {
+      fetchSellCurrency();
+      setModalVisible(false);
+    } else {
+      fetchBuyCurrency();
+      setModalVisible(false);
+    }
+    setUnit('');
+    setCurrency('');
   };
 
   return (
@@ -111,7 +150,7 @@ const ModalComponent = ({
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}>
+      onRequestClose={closeModal}>
         
       <KeyboardAvoidingView style={styles.modalOverlay}>
         <View style={styles.centeredView}>
@@ -130,19 +169,20 @@ const ModalComponent = ({
               </View>
 
               <View style={styles.headerRight}>
-                <Text style={{ fontSize: 16, marginTop: 3 }}>{buyTitle}</Text>
+                <Text style={{ fontSize: 16, marginTop: 3 }}>{modalBuyTitle}</Text>
                 <Text style={{ fontSize: 16 }}>{buy}₺</Text>
               </View>
             </View>
 
             <View>
               <View style={styles.inputBody}>
-                <Text style={styles.inputText}>Tutar</Text>
+                <Text style={styles.inputText}>Adet</Text>
                 <TextInput
                   style={styles.input}
-                  onFocus={handleFocusMoney}
-                  onChangeText={handleChangeMoney}
-                  value={money}
+                  placeholder="Adet"
+                  maxLength={5}
+                  onChangeText={handleAmountChange}
+                  value={unit}
                   textAlign="right"
                   keyboardType="numeric"
                 />
@@ -152,16 +192,15 @@ const ModalComponent = ({
                 <Text style={styles.inputText}>Tutar</Text>
                 <TextInput
                   style={styles.input}
-                  onFocus={handleFocusCurrency}
-                  onChangeText={handleChangeCurrency}
-                  value={currency}
+                  value={`${currency}₺`}
                   textAlign="right"
                   keyboardType="numeric"
+                  editable={false}
                 />
               </View>
 
               <View style={styles.buttonBody}>
-                <TouchableOpacity onPress={handleClose} style={styles.button}>
+                <TouchableOpacity onPress={closeModal} style={styles.button}>
                   <Text style={styles.buttonText}>Kapat</Text>
                 </TouchableOpacity>
 

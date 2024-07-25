@@ -11,7 +11,7 @@ import Header from './Components/header';
 const PortfolioScreen = () => {
 
   const [loading, setLoading] = useState(false);
-  const [portfoliosData, setPortfoliosData] = useState('');
+  const [portfolioData, setPortfolioData] = useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -20,6 +20,9 @@ const PortfolioScreen = () => {
     }, [])
   );
 
+  // Fetch işlemi splash screen e atıalcak. Yönlendirme ise Splash screende fetch bittiğinde 
+  // navigation.navigate('Portfolio', { data: result }); bu şekilde yapılacak
+  // bu ekranda ise route props olarak alınacak,  const { data } = route.params; 
   const fetchPortfolios = async () => {
     const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/portfolios`;
     const token = await AsyncStorage.getItem('token');
@@ -35,7 +38,7 @@ const PortfolioScreen = () => {
       });
 
       const data = await response.json();
-      setPortfoliosData(data);
+      setPortfolioData(data);
 
       if (!response.ok) {
         throw new Error('Portfolio Fetch Failed');
@@ -62,7 +65,7 @@ const PortfolioScreen = () => {
   return (
     <View style={styles.flatListContainer}>
     <FlatList
-      data={portfoliosData}
+      data={portfolioData}
       keyExtractor={(item) => item.currencyId}
       renderItem={({ item }) => <Item item={item} />}
       ListHeaderComponent={<Header/>}
