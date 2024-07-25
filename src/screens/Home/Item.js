@@ -96,10 +96,6 @@ const Item = ({ item, navigation }) => {
       setFavoriteIconType('star-outline');
       favoriteDeleteFetch();
     }
-    /*const newColor = favoriteColor === "black" ? "#FF7F3E" : "black";
-    const newIconType = favoriteIconType === "star-outline" ? "star" : "star-outline";
-    setFavoriteIconType(newIconType);
-    setFavoriteColor(newColor); */
   };
 
   return (

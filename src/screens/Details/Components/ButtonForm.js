@@ -7,13 +7,13 @@ const ButtonForm = ({openModal}) => {
   return (
     <View style={styles.buttonContainer}>
     <TouchableOpacity 
-    onPress={() => openModal('Al')} 
+    onPress={() => openModal(false)} 
     style={styles.button}>
       <Text style={styles.buttonText}>Al</Text>
     </TouchableOpacity>
 
     <TouchableOpacity 
-    onPress={() => openModal('Sat')} 
+    onPress={() => openModal(true)} 
     style={styles.button}>
       <Text style={styles.buttonText}>Sat</Text>
     </TouchableOpacity>

@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     },
     textCode:{
       fontSize: 18,
+      fontWeight: '500',
       color: '#000000',
     },
     textName:{
