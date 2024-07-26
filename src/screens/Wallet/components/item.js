@@ -1,75 +1,84 @@
-import { View, Text, StyleSheet} from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
 
-const Item = ({item}) => {
-
+const Item = ({ item }) => {
   
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   return (
     <View style={styles.card}>
-
       <View style={styles.titleContainer}>
-      <Text style={styles.title}>{item.currencyCode}</Text>
-      <Text style={styles.currencyName}>{item.currencyName}</Text>
+        <Text style={styles.currencyCode}>{item.currencyCode} ({item.currencySymbol})</Text>
+        <Text style={styles.currencyName}>{item.currencyName}</Text>
       </View>
 
-      <View style={{flexDirection: 'column', width: '70%',}}>
-      <View style={styles.contentContainer}>
-      <Text style={styles.contentTitle}>Adet</Text>
-    <Text style={styles.contentTitle}>Sembol</Text>
-    <Text style={styles.contentTitle}>Fiyat</Text>
-    <Text style={styles.contentTitle}>Toplam</Text>
-      </View>
+      <View style={styles.tableContainer}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.contentTitle}>Adet</Text>
+          <Text style={styles.contentTitle}>Fiyat</Text>
+          <Text style={styles.contentTitle}>Toplam</Text>
+        </View>
 
-      <View style={styles.contentContainer}>
-      <Text style={styles.content}>{item.unit}</Text>
-    <Text style={styles.content}>{item.currencySymbol}</Text>
-    <Text style={styles.content}>{item.unitPrice}₺</Text>
-    <Text style={styles.content}>{item.totalAmount}₺</Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.content}>{item.unit}</Text>
+          <Text style={styles.content}>{item.unitPrice}₺</Text>
+          <Text style={styles.content}>{item.totalAmount}₺</Text>
+        </View>
       </View>
-      </View>
-
-  </View>
-  )
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#fff",
-        flexDirection: 'row',
-        borderRadius: 20,
-        padding: 16,
-        margin: 8,
-        shadowColor: "#686868",
-        shadowOpacity: 0.1,
-        elevation: 4,
-      },
-      title: {
-        fontSize: 16,
-        fontWeight: "bold",
-        marginBottom: 4,
-      },
-      currencyName: {
-        fontSize: 14,
-        color: "#686868",
-      },
-      contentContainer:{
-        flexDirection:'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-      },
-      content: {
-        fontSize: 14,
-        color: "#000000",
-        marginLeft: 20,
-      },
-      contentTitle:{
-        fontSize: 12,
-        color: "#000000",
-      },
-      titleContainer: {
-        width: '30%',
-        flexDirection: 'column',
-      }
+  card: {
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    borderRadius: 20,
+    padding: 16,
+    margin: 8,
+    shadowColor: "#686868",
+    shadowOpacity: 0.1,
+    elevation: 4,
+  },
+  contentContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  tableContainer: {
+    justifyContent: "center",
+    flexDirection: "column",
+    width: "70%",
+  },
+  titleContainer: {
+    flexDirection: "column",
+    width: '33%',
+  },
+  currencyCode: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+  currencyName: {
+    fontSize: 14,
+    color: "#686868",
+  },
+  contentTitle: {
+    fontSize: 14,
+    marginBottom: 4,
+    fontWeight: '500',
+    color: "#000000",
+    textAlign: "center",
+    width: "25%",
+  },
+  content: {
+    fontSize: 14,
+    color: "#686868",
+    textAlign: "center",
+    width: "25%",
+  },
 });
 
 export default Item;

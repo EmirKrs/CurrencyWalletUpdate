@@ -11,7 +11,7 @@ import Item from "./Item";
 import appSettings from '../../../settings';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, }) => {
 
   const [currenciesData, setCurrenciesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,12 +26,13 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchData();
+    fetchCurrenciesData();
+    console.log(currenciesData);
   }, []);
 
   
 
-  const fetchData = async () => {
+  const fetchCurrenciesData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies`;
     const token = await AsyncStorage.getItem('token');
 
@@ -51,8 +52,6 @@ const HomeScreen = ({ navigation }) => {
         return response.json();
       })
       .then((data) => {
-        //data.result canlı apide
-        //console.log(data)
         setCurrenciesData(data);
         setLoading(false);
       })
@@ -61,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
       });
 
       setRefresh(false);
-  };
+  }; 
 
   const onRefresh = () => {
     setRefresh(true);
@@ -74,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
         <ActivityIndicator size="large" color="#F4A261" />
       </View>
     );
-  }
+  } 
 
   return (
     <View style={styles.flatListContainer}>

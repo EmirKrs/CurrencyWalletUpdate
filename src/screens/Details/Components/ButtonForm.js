@@ -24,15 +24,15 @@ const ButtonForm = ({openModal}) => {
 const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         marginVertical: 10,
-        marginHorizontal: 30,
+        marginHorizontal: 20,
       },
       button: {
         width: "40%",
         height: 40,
         padding: 8,
-        borderRadius: 5,
+        borderRadius: 15,
         backgroundColor: "#9BB8CD",
         justifyContent: 'center'
       },

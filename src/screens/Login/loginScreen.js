@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Text, View, ToastAndroid } from "react-native";
+import { StyleSheet, Image, Text, View, ToastAndroid, } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,13 +6,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import appSettings from "../../../settings";
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
+import ForgotButton from "./components/forgotButton";
 
 const LoginScreen = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [error, setError] = useState("");
-
-  const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/auth/login`;
 
   const validateEmail = (emailText) => {
     const regex = /^\S+@\S+\.\S+$/;
@@ -40,7 +39,8 @@ const LoginScreen = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch(apiUrl, {
+      const apiUrlLogin = `${appSettings.CurrencyExchangeWalletApiUrl}/auth/login`;
+      const response = await fetch(apiUrlLogin, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,6 @@ const LoginScreen = ({ navigation }) => {
       }
 
       const data = await response.json();
-      //console.log(data);
 
       await AsyncStorage.setItem("token", data.token);
       await AsyncStorage.setItem("expireDate", data.expireDate);
@@ -64,14 +63,50 @@ const LoginScreen = ({ navigation }) => {
       navigation.replace("Tabs");
       setError("");
     } catch (error) {
-      //console.error('Login error:', error);
       ToastAndroid.show("Lütfen geçerli bir şifre girin", ToastAndroid.SHORT);
     }
   };
 
   const handleRegister = () => {
     navigation.navigate("Register");
+    setEmailText('');
+    setPasswordText('');
   };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+    setEmailText('');
+    setPasswordText('');
+  };
+
+/*
+  const fetchForgotPassword = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/forgot-password`;
+
+    const encodedEmail = encodeURIComponent(emailText);
+    console.log(encodedEmail);
+
+    try {
+      const response = await fetch(`${apiUrl}?mailAddress=${encodedEmail}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseData =  response.status;
+      console.log(responseData);
+
+      if (responseData == 200) {
+        ToastAndroid.show("Doğrulama kodu mail adresinize gönderildi", ToastAndroid.SHORT);
+        navigation.navigate('ForgotPassword');
+        return;
+      }
+    } catch (error) {
+      console.error("Hata:", error);
+    }
+  };
+*/
 
   return (
     <SafeAreaView style={styles.container}>
@@ -109,6 +144,12 @@ const LoginScreen = ({ navigation }) => {
       title={"Kayıt"} 
       onPress={handleRegister} 
       color={"#FF7F3E"} />
+
+      <ForgotButton
+      title={'Şifremi Unuttum'}
+      color={'#FF7F3E'}
+      onPress={handleForgotPassword}/>
+      
     </SafeAreaView>
   );
 };

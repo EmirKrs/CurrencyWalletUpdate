@@ -28,7 +28,7 @@ const PaymentScreen = ({ navigation, route }) => {
   const { showComponent } = route.params || {};
 
   const handlePay = () => {
-    if (amount == '' || cardNumber== '' || cardDate == '' || cardSecure== '') {
+    if (amount == '' || cardNumber== '' || cardDate == '/' || cardDate == '' || cardSecure== '') {
       ToastAndroid.show("Lütfen boş alan bırakmayın", ToastAndroid.SHORT);
       return;
     }
@@ -287,10 +287,11 @@ const styles = StyleSheet.create({
   },
   modalButtonContainer: {
     flexDirection: "row",
+    marginTop: 5,
   },
   modalButton: {
     marginHorizontal: 10,
-    backgroundColor: '#ECF8FF',
+    backgroundColor: '#9BB8CD',
     width: '35%',
     padding: 8,
     borderRadius: 10,
@@ -300,7 +301,7 @@ const styles = StyleSheet.create({
   modalButtonTitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: 'black'
+    color: '#FFFFFF'
   },
   modalTitle: {
     fontSize: 18,

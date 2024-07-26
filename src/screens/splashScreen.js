@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import React, { useEffect } from "react";
+import { View, StyleSheet, } from "react-native";
+import React, { useEffect, } from "react";
 import * as Animatable from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import appSettings from "../../settings";
@@ -41,7 +41,7 @@ const SplashScreen = ({ navigation }) => {
         if (diffInHours <= 3) {
           refreshToken(token);
         } 
-        navigation.replace('Tabs');
+        navigation.replace('Tabs', {screen: 'Exchanges'});
       } else {
         navigation.replace('Login');
       }
@@ -52,7 +52,6 @@ const SplashScreen = ({ navigation }) => {
       navigation.replace('Login');
     }
   };
-
 
   const refreshToken = async (token) => {
     console.log(token);
