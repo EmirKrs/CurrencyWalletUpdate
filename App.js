@@ -15,6 +15,9 @@ import RegisterScreen from './src/screens/Register/registerScreen';
 import PaymentScreen from './src/screens/Payment/PaymentScreen';
 
 import SplashScreen from './src/screens/splashScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPassword/forgotPasswordScreen';
+import ApproveCodeScreen from './src/screens/ForgotPassword/approveCodeScreen';
+import ResetPasswordScreen from './src/screens/ForgotPassword/resetPasswordScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -72,6 +75,9 @@ function AppStack() {
       <Stack.Screen name='Register' component={RegisterScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Tabs" component={TabNavigator}  options={{ headerShown: false }}/>
       <Stack.Screen name="Payment" component={PaymentScreen}  options={{ headerTitleAlign: 'center' }}/>
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}  options={{ headerTitle: '' }}/>
+      <Stack.Screen name="ApprovePassword" component={ApproveCodeScreen}  options={{ headerTitle: '' }}/>
+      <Stack.Screen name="ResetPassword" component={ResetPasswordScreen}  options={{ headerTitle: '' }}/>
     </Stack.Navigator>
   );
 }

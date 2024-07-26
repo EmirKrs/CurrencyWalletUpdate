@@ -5,22 +5,31 @@ import { Ionicons } from "@expo/vector-icons";
 const WalletCard = ({data}) => {
 
   const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return num.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   return (
     <View style={styles.card}>
-      <View style={styles.balanceContainer}>
+      <View style={styles.titleContainer}>
       <Ionicons 
       name="server" 
       size={24} 
       color="#686868"
       style={{marginRight: 5}} />
-      <Text style={styles.balance}>Balance</Text>
+      <Text style={styles.title}>Balance</Text>
+    </View>
+
+    <View style={{flexDirection: 'row', alignItems: 'center', width: '90%', justifyContent: 'space-between'}}>
+    <Text style={styles.text}>Varlık</Text>
+    <Text style={styles.balance}>{formatNumber(data.walletBalance)} ₺</Text>
+
     </View>
       
-      <Text style={styles.title}>{formatNumber(data.walletBalance)}</Text>
-      <Text style={styles.content}>{formatNumber(data.availableBalance)} ₺</Text>
+    <View style={{flexDirection: 'row', alignItems: 'center', width: '90%',  justifyContent: 'space-between'}}>
+    <Text style={styles.text}>Bakiye</Text>
+    <Text style={styles.wallet}>{formatNumber(data.availableBalance)} ₺</Text>
+    </View>
+
     </View>
   );
 };
@@ -28,7 +37,7 @@ const WalletCard = ({data}) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#FFFFFF",
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderRadius: 20,
     padding: 16,
@@ -41,30 +50,31 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
   },
-  balanceContainer: {
+  titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 20,
+    
   },
-  title: {
+  balance: {
     fontSize: 28,
     fontWeight: "bold",
     marginVertical: 10,
-    color: '#000'
+    color: '#000',
+
   },
-  content: {
+  wallet:{
     fontSize: 20,
     color: "#686868",
+ 
   },
-  balance: {
-    fontSize: 22,
+  text:{
+    fontSize: 18,
     color: "#686868",
   },
-  gradient: {
-    borderRadius: 50, // İkonunuzun etrafında yuvarlak kenarlar isterseniz bu değeri ayarlayabilirsiniz
-    padding: 10,
-  },
-  icon: {
-    backgroundColor: 'transparent', // İkon arka planını şeffaf yaparak gradient'in görünmesini sağlar
+  title: {
+    fontSize: 22,
+    color: "#686868",
   },
 });
 

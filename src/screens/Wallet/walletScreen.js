@@ -46,9 +46,7 @@ const WalletScreen = ({navigation}) => {
       console.error('Wallet Exist Error:', error);
       return false;
 
-    } finally{
-      //setLoading(false);
-    }
+    } 
   };
 
 
@@ -75,8 +73,6 @@ const WalletScreen = ({navigation}) => {
       
     } catch (error) {
       console.error('Wallet Fetch Error:', error);
-    } finally{
-      //setLoading(false);
     }
   };
 
@@ -160,11 +156,11 @@ const styles = StyleSheet.create({
   },
   text:{
     fontSize: 16,
-    marginBottom: 5,
     color: '#7E7E7E',
   },
   textContainer: {
-    margin: 10,
+    marginLeft: 15,
+    marginVertical: 10,
     justifyContent: 'center',
   }
 });

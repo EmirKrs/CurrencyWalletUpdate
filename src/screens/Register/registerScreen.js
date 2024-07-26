@@ -66,11 +66,11 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
 
-    postData();
+    postRegisterData();
     setError("");
   };
 
-  const postData = async () => {
+  const postRegisterData = async () => {
     const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
     try {
       const response = await fetch(apiUrl, {

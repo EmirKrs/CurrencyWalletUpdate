@@ -121,14 +121,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#D37676',
         paddingHorizontal: 20,
         paddingVertical: 10,
-        borderRadius: 5,
+        borderRadius: 10,
       },
       buttonIncrease: {
         backgroundColor: '#A5DD9B',
         paddingHorizontal: 20,
         paddingVertical: 10,
         marginHorizontal: 10,
-        borderRadius: 5,
+        borderRadius: 10,
       },
       buttonText: {
         color: '#ffffff',

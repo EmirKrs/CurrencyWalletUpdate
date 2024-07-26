@@ -287,8 +287,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "48%",
-    borderRadius: 18,
-    backgroundColor: "#408BF3",
+    borderRadius: 15,
+    backgroundColor: "#9BB8CD",
   },
   buttonText: {
     color: "#FFFFFF",

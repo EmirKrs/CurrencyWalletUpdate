@@ -1,15 +1,28 @@
-import { View, Text, StyleSheet, ActivityIndicator, ToastAndroid } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  ToastAndroid,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
-import Body from "./Components/Body";
 import appSettings from "../../../settings";
 import Header from "./Components/Header";
 import Button from "./Components/buttonProfile";
+import InputProfile from "./Components/inputProfile";
 
 const ProfileScreen = ({ navigation }) => {
-  const [userData, setUserData] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    surname: "",
+    emailAddress: "",
+    phoneNumber: "",
+    username: "",
+  });
 
   const fetchUserData = async () => {
     const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/info`;
@@ -25,7 +38,7 @@ const ProfileScreen = ({ navigation }) => {
       });
 
       const user = await response.json();
-      setUserData(user);
+      setUserInfo(user);
       setLoading(false);
 
       if (!response.ok) {
@@ -39,7 +52,6 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     fetchUserData();
   }, []);
-
 
   const fetchLogout = async () => {
     const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/auth/logout`;
@@ -63,7 +75,11 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
-  const handleDeleteAccount = () => {};
+  const handleDeleteAccount = () => {
+    // api POST işlemi 
+    // Hesap silinmeden önce Alert çıksın
+    // tamam denildiğinde hesap silinsin
+  };
 
   const handleLogout = () => {
     fetchLogout();
@@ -71,7 +87,19 @@ const ProfileScreen = ({ navigation }) => {
     navigation.replace("Login");
   };
 
-  
+  const handleUpdate = () => {
+    // api POST işlemi yapılacak.
+    // body kısmına userInfo gelecek.
+    // + validasyonlar
+    ToastAndroid.show("Profil bilgileri güncellendi", ToastAndroid.SHORT);
+  };
+
+  const handleInputChange = (field, value) => {
+    setUserInfo((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
 
   if (loading) {
     return (
@@ -84,8 +112,56 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
+      <View style={styles.bodyContainer}>
+        <View style={{ width: "80%", marginVertical: 20 }}>
+          <InputProfile
+            title={"Ad"}
+            value={userInfo.name}
+            maxLength={20}
+            keyboardType={"default"}
+            onChangeText={(value) => handleInputChange("name", value)}
+          />
 
-      <Body userData={userData} />
+          <InputProfile
+            title={"Soyad"}
+            value={userInfo.surname}
+            maxLength={20}
+            keyboardType={"default"}
+            onChangeText={(value) => handleInputChange("surname", value)}
+          />
+
+          <InputProfile
+            title={"Email"}
+            value={userInfo.emailAddress}
+            maxLength={20}
+            keyboardType={"email-address"}
+            onChangeText={(value) => handleInputChange("emailAddress", value)}
+          />
+
+          <InputProfile
+            title={"Phone"}
+            value={userInfo.phoneNumber}
+            maxLength={11}
+            keyboardType={"numeric"}
+            onChangeText={(value) => handleInputChange("phoneNumber", value)}
+          />
+
+          <InputProfile
+            title={"Username"}
+            value={userInfo.username}
+            maxLength={20}
+            keyboardType={"default"}
+            onChangeText={(value) => handleInputChange("username", value)}
+          />
+        </View>
+
+        <TouchableOpacity 
+        style={styles.updateButton} 
+        onPress={handleUpdate}>
+          <Text style={styles.updateText}>Güncelle</Text>
+        </TouchableOpacity>
+        
+      </View>
 
       <View style={styles.buttonContainer}>
         <Button title={"Çıkış"} onPress={handleLogout} />
@@ -98,7 +174,7 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     backgroundColor: "#FFFFFF",
   },
   loadingContainer: {
@@ -118,6 +194,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     shadowColor: "#000",
     elevation: 12,
+  },
+  bodyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    marginHorizontal: 10,
+    borderRadius: 30,
+    padding: 10,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    elevation: 4,
+  },
+  updateText: {
+    color: "#9BB8CD",
+    fontSize: 16,
   },
 });
 
