@@ -76,7 +76,7 @@ function AppStack() {
       <Stack.Screen name="Tabs" component={TabNavigator}  options={{ headerShown: false }}/>
       <Stack.Screen name="Payment" component={PaymentScreen}  options={{ headerTitleAlign: 'center' }}/>
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen}  options={{ headerTitle: '' }}/>
-      <Stack.Screen name="ApprovePassword" component={ApproveCodeScreen}  options={{ headerTitle: '' }}/>
+      <Stack.Screen name="ApproveCode" component={ApproveCodeScreen}  options={{ headerTitle: '' }}/>
       <Stack.Screen name="ResetPassword" component={ResetPasswordScreen}  options={{ headerTitle: '' }}/>
     </Stack.Navigator>
   );

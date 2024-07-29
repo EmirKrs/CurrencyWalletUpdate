@@ -25,7 +25,7 @@ const PaymentScreen = ({ navigation, route }) => {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
 
-  const { showComponent } = route.params || {};
+  const { showComponent, buttonType } = route.params || {};
 
   const handlePay = () => {
     if (amount == '' || cardNumber== '' || cardDate == '/' || cardDate == '' || cardSecure== '') {
@@ -36,9 +36,16 @@ const PaymentScreen = ({ navigation, route }) => {
   };
 
   const handleCancel = () => {
-    navigation.replace('Tabs', {
-      screen: 'Wallet',
-    });
+    if(buttonType== 'wallet'){
+      navigation.replace('Tabs', {
+        screen: 'Wallet',
+      });
+    }else{
+      navigation.replace('Tabs', {
+        screen: 'Portfolio',
+      });
+    }
+
   };
 
   const handleModalConfirm = () => {

@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import React from "react";
 
-const Button = ({ title, onPress }) => {
+const ButtonProfile = ({ title, onPress }) => {
   return (
     <>
       <TouchableOpacity 
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Button;
+export default ButtonProfile;

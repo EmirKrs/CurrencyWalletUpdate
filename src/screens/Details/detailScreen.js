@@ -51,7 +51,7 @@ const DetailScreen = ({ route, navigation }) => {
     setModalVisible(true);
   };
 
-  const fetchCurrencyData = async () => {
+ /* const fetchCurrencyData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
     const token = await AsyncStorage.getItem("token");
 
@@ -77,7 +77,34 @@ const DetailScreen = ({ route, navigation }) => {
       .catch((error) => {
         console.error("Fetch error:", error);
       });
-  };
+  }; */
+
+  
+   const fetchCurrencyData = async() => {
+    const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
+    const token = await AsyncStorage.getItem("token");
+
+    try{
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+        setCurrencyData(data);
+        setLoading(false);
+
+      if (!response.ok) {
+        throw new Error("Detail Fetch Failed");
+      }
+    }
+     catch (error) {
+      ToastAndroid.show("Detail Fetch İşlemi", ToastAndroid.SHORT);
+    }
+  };  
 
   const fetchChartData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/charts/daily-currency-data?currencyCode=${data.code}&buySellType=1&day=10`;

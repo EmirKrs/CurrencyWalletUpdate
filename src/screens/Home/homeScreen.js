@@ -6,6 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   RefreshControl,
+  ToastAndroid,
 } from "react-native";
 import Item from "./Item";
 import appSettings from '../../../settings';
@@ -27,12 +28,9 @@ const HomeScreen = ({ navigation, }) => {
   useEffect(() => {
     setLoading(true);
     fetchCurrenciesData();
-    console.log(currenciesData);
   }, []);
 
-  
-
-  const fetchCurrenciesData = async () => {
+  /*const fetchCurrenciesData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies`;
     const token = await AsyncStorage.getItem('token');
 
@@ -60,11 +58,38 @@ const HomeScreen = ({ navigation, }) => {
       });
 
       setRefresh(false);
+  };  */
+
+  const fetchCurrenciesData = async() => {
+    const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies`;
+    const token = await AsyncStorage.getItem('token');
+
+    try{
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+        setCurrenciesData(data);
+        setLoading(false);
+
+      if (!response.ok) {
+        throw new Error("Home Fetch Failed");
+      }
+    }
+     catch (error) {
+      ToastAndroid.show("Home Fetch İşlemi", ToastAndroid.SHORT);
+    }
+    setRefresh(false);
   }; 
 
   const onRefresh = () => {
     setRefresh(true);
-    fetchData();
+    fetchCurrenciesData();
   };
 
   if (loading) {

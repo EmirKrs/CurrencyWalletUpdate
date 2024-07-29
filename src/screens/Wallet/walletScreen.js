@@ -14,7 +14,7 @@ const WalletScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true);
 
   const handleAddMoney = () => {
-    navigation.navigate('Payment', {showComponent: false});
+    navigation.navigate('Payment', {showComponent: false, buttonType: 'wallet'});
   };
 
   const handleWithdrawMoney = () => { 
@@ -131,7 +131,7 @@ const WalletScreen = ({navigation}) => {
       
       <FlatList
       data={walletData.details}
-      renderItem={({item}) => <Item item={item}/>}
+      renderItem={({item}) => <Item item={item} navigation={navigation}/>}
       keyExtractor={item => item.id}/>
       
     </View>

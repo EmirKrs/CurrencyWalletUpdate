@@ -1,17 +1,128 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, StyleSheet, KeyboardAvoidingView, Image, ToastAndroid, Platform, Text } from "react-native";
+import React, { useState } from "react";
+import appSettings from "../../../settings";
+//Components
+import InputAuth from "../../components/input/inputAuth";
+import ButtonAuth from "../../components/button/buttonAuth";
 
-const ApproveCodeScreen = () => {
+const ApproveCodeScreen = ({ navigation, route }) => {
+  const { email } = route.params;
+  const [approveCode, setApproveCode] = useState("");
+
+
+  const handleNext = () => {
+    if(approveCode == '') {
+      ToastAndroid.show('Lütfen Alanı boş bırakmayınız', ToastAndroid.SHORT);
+      return;
+    }
+    fetchApproveCode();
     
+  };
+
+  const fetchApproveCode = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/check-approve-code`;
+
+    const encodedEmail = encodeURIComponent(email);
+    const encodedApproveCode = encodeURIComponent(approveCode);
+
+    try {
+      const response = await fetch(`${apiUrl}?approveCode=${encodedApproveCode}&mailAddress=${encodedEmail}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseData = await response.json();
+      console.log(responseData);
+
+      if (!responseData.isApproved) {
+          ToastAndroid.show(`Lütfen geçerli kodu girin`, ToastAndroid.SHORT);
+      }
+      if(responseData.isApproved) {
+        ToastAndroid.show("Kod onaylandı", ToastAndroid.SHORT);
+        navigation.navigate('ResetPassword', {email, recoveryCode: responseData.recoveryCode});
+        setApproveCode('');
+        return;
+      }
+    } catch (error) {
+      console.error("Hata:", error);
+    }
+  };
+
   return (
-    <View>
-      <Text>approveCodeScreen</Text>
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
+    <View style={styles.logoContainer}>
+      <Image
+        source={require("../../../assets/approve_code_logo.png")}
+        style={styles.logo}
+      ></Image>
     </View>
-  )
+
+    <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
+
+    <Text style={styles.content}>E-mail adresinize gelen 6 haneli onay kodunu girin</Text>
+
+
+    <InputAuth
+    label={'Onay Kodu'}
+    value={approveCode}
+    maxLength={6}
+    keyboardType={'numeric'}
+    secureTextEntry={false}
+    onchangeText={(approveCode)=>setApproveCode(approveCode)}/>
+
+    <ButtonAuth
+    title={'Sonraki'}
+    onPress={handleNext}
+    color={'#FF7F3E'}
+    marginTop={10}
+    />
+
+  </KeyboardAvoidingView>
+  );
 };
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: '#FFFFFF'
+  },
+  textContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    color: '#000',
+    fontSize: 28,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  content: {
+    color: '#000',
+    fontSize: 18,
+    textAlign: 'center',
+    marginHorizontal: 50,
+  },
+  logo: {
+    width: "40%",
+    resizeMode: "contain",
+    backgroundColor: "#FFFFFF",
+  },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "30%",
+    marginTop: 30,
+    marginBottom: 10,
+  },
 });
 
 export default ApproveCodeScreen;
