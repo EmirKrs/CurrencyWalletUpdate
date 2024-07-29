@@ -42,13 +42,14 @@ const SplashScreen = ({ navigation }) => {
           refreshToken(token);
         } 
         navigation.replace('Tabs', {screen: 'Exchanges'});
+        // Home ekranındaki fetch işlemi burda yapılacak.
+        // navigation ile fetch işleminden dönen veri göderilecek.
       } else {
         navigation.replace('Login');
       }
 
     } catch (error) {
       console.error('Token validation error:', error);
-      // Hata durumunu yönetme
       navigation.replace('Login');
     }
   };

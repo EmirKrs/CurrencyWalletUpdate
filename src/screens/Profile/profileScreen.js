@@ -5,17 +5,20 @@ import {
   ActivityIndicator,
   ToastAndroid,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 //Components
 import appSettings from "../../../settings";
 import Header from "./Components/Header";
-import Button from "./Components/buttonProfile";
 import InputProfile from "./Components/inputProfile";
+import ButtonProfile from "./Components/buttonProfile";
 
 const ProfileScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
+  const [hasChanged, setHasChanged] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "",
     surname: "",
@@ -38,7 +41,9 @@ const ProfileScreen = ({ navigation }) => {
       });
 
       const user = await response.json();
-      setUserInfo(user);
+      const { name, surname, emailAddress, phoneNumber, username } = user;
+      const filteredUserData = {name, surname, emailAddress, phoneNumber, username};
+      setUserInfo(filteredUserData);
       setLoading(false);
 
       if (!response.ok) {
@@ -48,10 +53,6 @@ const ProfileScreen = ({ navigation }) => {
       console.error("User Fetch Error:", error);
     }
   };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
 
   const fetchLogout = async () => {
     const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/auth/logout`;
@@ -75,8 +76,58 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  const fetchUpdateUser = async () => {
+    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/update-info`;
+    const token = await AsyncStorage.getItem("token");
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: userInfo.name,
+          surname: userInfo.surname,
+          emailAddress: userInfo.emailAddress,
+          phoneNumber: userInfo.phoneNumber,
+          username: userInfo.username,
+        }),
+      });
+
+      const responseUpdate = await response.json();
+      console.log(responseUpdate);
+
+      if (!response.ok) {
+        if (responseUpdate.Messages?.[0]) {
+          ToastAndroid.show(`${responseUpdate.Messages[0]}`,ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
+        }
+        return;
+      }
+      if (!responseUpdate.isSuccess) {
+        setError(responseUpdate.Messages?.[0]);
+        ToastAndroid.show(`${responseUpdate.Messages?.[0]}`, ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show(`${responseUpdate.messages?.[0]}`, ToastAndroid.SHORT);
+        console.log(responseUpdate);
+      }
+    } catch (error) {
+      console.error("User Update Fetch Error:", error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      fetchUserData();
+    }, [])
+  );
+
   const handleDeleteAccount = () => {
-    // api POST işlemi 
+    // api POST işlemi
     // Hesap silinmeden önce Alert çıksın
     // tamam denildiğinde hesap silinsin
   };
@@ -87,11 +138,19 @@ const ProfileScreen = ({ navigation }) => {
     navigation.replace("Login");
   };
 
-  const handleUpdate = () => {
-    // api POST işlemi yapılacak.
-    // body kısmına userInfo gelecek.
-    // + validasyonlar
-    ToastAndroid.show("Profil bilgileri güncellendi", ToastAndroid.SHORT);
+  const handleUpdateProfile = () => {
+    if (!userInfo.name.trim() || !userInfo.surname.trim() || !userInfo.emailAddress.trim() || !userInfo.phoneNumber.trim() || !userInfo.username.trim()) {
+      ToastAndroid.show("Profil bölümünde boş alan bırakılamaz",ToastAndroid.SHORT);
+      return;
+    }
+    else if(!hasChanged) {
+      ToastAndroid.show('Herhangi bir değişiklik yapılmadı', ToastAndroid.SHORT);
+    }
+    else{
+      fetchUpdateUser();
+      setHasChanged(false);
+    }
+
   };
 
   const handleInputChange = (field, value) => {
@@ -99,7 +158,10 @@ const ProfileScreen = ({ navigation }) => {
       ...prevState,
       [field]: value,
     }));
+    setHasChanged(true);
   };
+
+
 
   if (loading) {
     return (
@@ -111,9 +173,10 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.inner}>
       <Header />
       <View style={styles.bodyContainer}>
-        <View style={{ width: "80%", marginVertical: 20 }}>
+        <View style={{ width: "90%", marginVertical: 20 }}>
           <InputProfile
             title={"Ad"}
             value={userInfo.name}
@@ -133,7 +196,7 @@ const ProfileScreen = ({ navigation }) => {
           <InputProfile
             title={"Email"}
             value={userInfo.emailAddress}
-            maxLength={20}
+            maxLength={30}
             keyboardType={"email-address"}
             onChangeText={(value) => handleInputChange("emailAddress", value)}
           />
@@ -155,18 +218,20 @@ const ProfileScreen = ({ navigation }) => {
           />
         </View>
 
-        <TouchableOpacity 
-        style={styles.updateButton} 
-        onPress={handleUpdate}>
+        <TouchableOpacity
+          style={styles.updateButton}
+          onPress={handleUpdateProfile}
+        >
           <Text style={styles.updateText}>Güncelle</Text>
         </TouchableOpacity>
-        
       </View>
+      
 
       <View style={styles.buttonContainer}>
-        <Button title={"Çıkış"} onPress={handleLogout} />
-        <Button title={"Hesap Sil"} onPress={handleDeleteAccount} />
+        <ButtonProfile title={"Çıkış"} onPress={handleLogout} />
+        <ButtonProfile title={"Hesap Sil"} onPress={handleDeleteAccount} />
       </View>
+      </ScrollView>
     </View>
   );
 };
@@ -184,7 +249,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   buttonContainer: {
-    height: "12%",
+    height: '12%',
     marginHorizontal: 10,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
@@ -196,6 +261,7 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   bodyContainer: {
+    flex:1,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,
@@ -209,6 +275,10 @@ const styles = StyleSheet.create({
   updateText: {
     color: "#9BB8CD",
     fontSize: 16,
+  },
+  inner: {
+    
+    flexGrow: 1,
   },
 });
 

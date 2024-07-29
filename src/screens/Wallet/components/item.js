@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
-const Item = ({ item }) => {
+const Item = ({ item, navigation}) => {
   
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   return (
+
     <View style={styles.card}>
       <View style={styles.titleContainer}>
         <Text style={styles.currencyCode}>{item.currencyCode} ({item.currencySymbol})</Text>
