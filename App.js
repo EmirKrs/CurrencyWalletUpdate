@@ -63,6 +63,7 @@ function TabNavigator ()  {
       <Tab.Screen name="Exchanges" component={HomeStackScreen} />
       <Tab.Screen name="Wallet" component={WalletScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+
    </Tab.Navigator>
   );
 };
