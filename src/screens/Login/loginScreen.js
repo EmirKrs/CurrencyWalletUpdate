@@ -71,12 +71,14 @@ const LoginScreen = ({ navigation }) => {
     navigation.navigate("Register");
     setEmailText('');
     setPasswordText('');
+    setError('');
   };
 
   const handleForgotPassword = () => {
     navigation.navigate('ForgotPassword');
     setEmailText('');
     setPasswordText('');
+    setError('');
   };
 
 

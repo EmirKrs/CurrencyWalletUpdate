@@ -277,7 +277,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   inner: {
-    
     flexGrow: 1,
   },
 });
