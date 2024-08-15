@@ -9,7 +9,7 @@ import ButtonCard from "./components/buttonCard";
 import Item from "./components/item";
 
 
-const WalletScreen = ({navigation}) => {
+const Index = ({navigation}) => {
   const [walletData, setWalletData] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default WalletScreen;
+export default Index;

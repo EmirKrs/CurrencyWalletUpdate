@@ -2,7 +2,7 @@ import { View, StyleSheet, } from "react-native";
 import React, { useEffect, } from "react";
 import * as Animatable from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import appSettings from "../../settings";
+import appSettings from "../../../settings";
 
 const SplashScreen = ({ navigation }) => {
 
@@ -89,7 +89,7 @@ const SplashScreen = ({ navigation }) => {
         style={styles.image}
         animation="zoomIn"
         duration={1000}
-        source={require("../../assets/logo1.png")}>
+        source={require("../../../assets/logo1.png")}>
 
         </Animatable.Image>
     </View>

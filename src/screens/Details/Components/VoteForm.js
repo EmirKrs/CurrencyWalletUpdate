@@ -71,7 +71,7 @@ const VoteForm = ({data}) => {
       
     } catch (error) {
       console.error('Vote Fetch Error:', error);
-    }
+    } 
     };
 
     useEffect(() => {

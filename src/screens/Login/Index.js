@@ -8,7 +8,7 @@ import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
 import ForgotButton from "./components/forgotButton";
 
-const LoginScreen = ({ navigation }) => {
+const Index = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [error, setError] = useState("");
@@ -155,4 +155,4 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
-export default LoginScreen;
+export default Index;

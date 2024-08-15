@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 //Components
@@ -16,7 +16,7 @@ import Header from "./Components/Header";
 import InputProfile from "./Components/inputProfile";
 import ButtonProfile from "./Components/buttonProfile";
 
-const ProfileScreen = ({ navigation }) => {
+const Index = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasChanged, setHasChanged] = useState(false);
   const [userInfo, setUserInfo] = useState({
@@ -123,8 +123,9 @@ const ProfileScreen = ({ navigation }) => {
     useCallback(() => {
       setLoading(true);
       fetchUserData();
+      console.log('useFocusEffect Çalışıyor');
     }, [])
-  );
+  );  
 
   const handleDeleteAccount = () => {
     // api POST işlemi
@@ -281,4 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default Index;
