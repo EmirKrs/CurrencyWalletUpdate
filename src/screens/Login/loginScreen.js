@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
     if (!validateEmail(emailText)) {
       setError("Lütfen Geçerli bir email adresi girin");
       return;
-    }
+    } 
     if (passwordText.length < 6) {
       setError("Lütfen şifreyi kontrol edin");
       return;

@@ -88,7 +88,7 @@ const WalletScreen = ({navigation}) => {
           setLoading(false);
         } 
         else{
-          navigation.navigate('Payment');
+          navigation.navigate('Payment', {showComponent: true});
         }
       };
       checkWalletExistence();

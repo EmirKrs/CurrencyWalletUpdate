@@ -22,8 +22,6 @@ const SplashScreen = ({ navigation }) => {
   }, []);
 
   const startAnimation = () => {
-
-    textRef.zoomIn(3000);
     imageRef.zoomIn(3000);
   };
 
@@ -94,15 +92,6 @@ const SplashScreen = ({ navigation }) => {
         source={require("../../assets/logo1.png")}>
 
         </Animatable.Image>
-
-      <Animatable.Text
-        ref={(ref) => (textRef = ref)}
-        style={styles.text}
-        animation="zoomIn"
-        duration={1000}>
-
-        Yükleniyor
-      </Animatable.Text>
     </View>
   );
 };
