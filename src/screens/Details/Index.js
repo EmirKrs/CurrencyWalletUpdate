@@ -20,7 +20,7 @@ import Chart from "./Components/Chart";
 import ListTitle from "./Components/ListTitle";
 import VoteForm from "./Components/VoteForm";
 
-const DetailScreen = ({ route, navigation }) => {
+const Index = ({ route, navigation }) => {
   const data = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -51,7 +51,7 @@ const DetailScreen = ({ route, navigation }) => {
     setModalVisible(true);
   };
 
- /* const fetchCurrencyData = async () => {
+  /* const fetchCurrencyData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
     const token = await AsyncStorage.getItem("token");
 
@@ -79,12 +79,11 @@ const DetailScreen = ({ route, navigation }) => {
       });
   }; */
 
-  
-   const fetchCurrencyData = async() => {
+  const fetchCurrencyData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
     const token = await AsyncStorage.getItem("token");
 
-    try{
+    try {
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -94,17 +93,17 @@ const DetailScreen = ({ route, navigation }) => {
       });
 
       const data = await response.json();
-        setCurrencyData(data);
-        setLoading(false);
+      setCurrencyData(data);
 
       if (!response.ok) {
         throw new Error("Detail Fetch Failed");
       }
-    }
-     catch (error) {
+    } catch (error) {
       ToastAndroid.show("Detail Fetch İşlemi", ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
-  };  
+  };
 
   const fetchChartData = async () => {
     const url = `${appSettings.CurrencyExchangeWalletApiUrl}/charts/daily-currency-data?currencyCode=${data.code}&buySellType=1&day=10`;
@@ -139,8 +138,6 @@ const DetailScreen = ({ route, navigation }) => {
     fetchChartData();
   }, []);
 
-
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -151,17 +148,14 @@ const DetailScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-   
       <Header data={data} />
 
-      <VoteForm
-      data={data}/>
+      <VoteForm data={data} />
 
       {!!chartData && <Chart chartData={chartData} />}
-     
 
-      <ListTitle/>
-     
+      <ListTitle />
+
       <View style={styles.flatListContainer}>
         <FlatList
           data={currencyData.currencySingleDetails}
@@ -169,7 +163,7 @@ const DetailScreen = ({ route, navigation }) => {
           renderItem={({ item }) => <DetailItem item={item} />}
           numColumns={1}
           contentContainerStyle={{ paddingBottom: 10 }}
-          />
+        />
       </View>
 
       <ButtonForm openModal={openModal} />
@@ -198,7 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
 
   flatListContainer: {
@@ -207,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailScreen;
+export default Index;

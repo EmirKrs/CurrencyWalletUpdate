@@ -13,7 +13,7 @@ import appSettings from "../../../settings";
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
 
-const RegisterScreen = ({ navigation }) => {
+const Index = ({ navigation }) => {
   const [nameText, setNameText] = useState("");
   const [surnametext, setSurnameText] = useState("");
   const [phoneText, setPhoneText] = useState("");
@@ -215,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default Index;

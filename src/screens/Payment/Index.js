@@ -16,7 +16,7 @@ import ButtonPayment from "./components/buttonPayment";
 import HeaderPayment from "./components/headerPayment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PaymentScreen = ({ navigation, route }) => {
+const Index = ({ navigation, route }) => {
   const [amount, setAmount] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardDate, setCardDate] = useState("");
@@ -316,4 +316,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PaymentScreen;
+export default Index;

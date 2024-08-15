@@ -8,11 +8,11 @@ import {
   RefreshControl,
   ToastAndroid,
 } from "react-native";
-import Item from "./Item";
+import Item from "./components/Item";
 import appSettings from '../../../settings';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HomeScreen = ({ navigation, }) => {
+const Index = ({ navigation, }) => {
 
   const [currenciesData, setCurrenciesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default Index;
