@@ -97,7 +97,6 @@ const Index = ({ navigation }) => {
       });
 
       const responseUpdate = await response.json();
-      console.log(responseUpdate);
 
       if (!response.ok) {
         if (responseUpdate.Messages?.[0]) {
@@ -123,7 +122,6 @@ const Index = ({ navigation }) => {
     useCallback(() => {
       setLoading(true);
       fetchUserData();
-      console.log('useFocusEffect Çalışıyor');
     }, [])
   );  
 
@@ -131,6 +129,7 @@ const Index = ({ navigation }) => {
     // api POST işlemi
     // Hesap silinmeden önce Alert çıksın
     // tamam denildiğinde hesap silinsin
+    ToastAndroid.show('Bu özellik Geliştirme Aşamasında', ToastAndroid.SHORT);
   };
 
   const handleLogout = () => {
