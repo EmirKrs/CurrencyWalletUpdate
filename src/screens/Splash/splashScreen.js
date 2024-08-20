@@ -25,46 +25,35 @@ const SplashScreen = ({ navigation }) => {
 
   const checkTokenValidity = async () => {
     try {
-      let token = 'eyJzdWIiOiJOZXRDb3JlQVBJSnd0U2FtcGxlXzRjZjQ5YmI2LTgzYWMtNDcwOS0yOTVlLTA4ZGNiZDFlZDZiMiIsImp0aSI6IjM4YzU3ZjczLTkyZjAtNDdiZi1hMGZhLTAyYTNmZDhkMDM3OSIsImlhdCI6MTcyMzczMjc1MSwiVXNlcm5hbWUiOiJFbWlyaGFuS1JTIiwiVXNlcklkIjoiNGNmNDliYjYtODNhYy00NzA5LTI5NWUtMDhkY2JkMWVkNmIyIiwiTmFtZSI6IkVtaXJoYW4iLCJTdXJuYW1lIjoiS2FyYWFyc2xhbiIsIkVtYWlsQWRkcmVzcyI6ImVtaXJrYXJhYXJzbGFuQGdtYWlsLmNvbSIsIlVzZXJSb2xlIjoiMiIsImV4cCI6MTcyMzgxOTE1MSwiaXNzIjoiTmV0Q29yZUFQSUp3dFNhbXBsZSIsImF1ZCI6Ik5ldENvcmVBUElKd3RTYW1wbGUifQ';
-     // let token = await AsyncStorage.getItem("token");
-      let expireDateString = await AsyncStorage.getItem("expireDate");
-     // console.log(token);
-     // console.log(expireDateString);
+      const token = await AsyncStorage.getItem("token");
+      const expireDateString = await AsyncStorage.getItem("expireDate");
 
       if (token && expireDateString) {
-        const now = new Date();
-        const expireDate = new Date(expireDateString);
-        const diffInMillis = expireDate.getTime() - now.getTime();
-        const diffInHours = diffInMillis / (1000 * 60 * 60);
+        const response = await fetch(`${apiUrl}/token/check`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        if (diffInHours <= 3) {
-          const response = await fetch(`${apiUrl}/token/check`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+        if (response.ok) {
+          const now = new Date();
+          const expireDate = new Date(expireDateString);
+          const diffInMillis = expireDate.getTime() - now.getTime();
+          const diffInHours = diffInMillis / (1000 * 60 * 60);
 
-          if (response.ok) {
-            // token geçerli ise
+          //response okey ise token refresh kontrolü
+          if (diffInHours <= 3) {
             await refreshToken(token);
-            navigation.replace("Tabs", { screen: "Exchanges" });
-          } else {
-            // Token geçerli değilse
-            navigation.replace("Login");
           }
-        } else {
-          // Token süresi 3 saatten fazlaysa
-          // burada da check endpointinde token kontrolü yapılacak.
           navigation.replace("Tabs", { screen: "Exchanges" });
+          return;
         }
-      } else {
-        // Token veya expireDate bulunmadıysa
-        navigation.replace("Login");
       }
     } catch (error) {
       console.error("Token validation error:", error);
     }
+    navigation.replace("Login");
   };
 
   const refreshToken = async (oldToken) => {
