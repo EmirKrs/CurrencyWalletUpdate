@@ -1,9 +1,10 @@
-import { StyleSheet, Image, Text, View, ToastAndroid, } from "react-native";
+import { StyleSheet, Image, Text, View, ToastAndroid } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login } from "../../api/services/authService";
+import { validateEmail } from "../../helpers/validationHelpers";
 //Components
-import appSettings from "../../../settings";
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
 import ForgotButton from "./components/forgotButton";
@@ -12,11 +13,6 @@ const Index = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
   const [passwordText, setPasswordText] = useState("");
   const [error, setError] = useState("");
-
-  const validateEmail = (emailText) => {
-    const regex = /^\S+@\S+\.\S+$/;
-    return regex.test(emailText);
-  };
 
   const handleLogin = async () => {
     if (!emailText.trim()) {
@@ -32,58 +28,53 @@ const Index = ({ navigation }) => {
     if (!validateEmail(emailText)) {
       setError("Lütfen Geçerli bir email adresi girin");
       return;
-    } 
+    }
     if (passwordText.length < 6) {
       setError("Lütfen şifreyi kontrol edin");
       return;
     }
 
+    fetchLogin();
+  };
+
+  const fetchLogin = async () => {
     try {
-      const apiUrlLogin = `${appSettings.CurrencyExchangeWalletApiUrl}/auth/login`;
-      const response = await fetch(apiUrlLogin, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          identity: emailText,
-          password: passwordText,
-        }),
-      });
+      const credentials = {
+        identity: emailText,
+        password: passwordText,
+      };
+      const response = await login(credentials);
 
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
+      await AsyncStorage.setItem("token", response.token);
+      await AsyncStorage.setItem("expireDate", response.expireDate);
 
-      const data = await response.json();
-
-      await AsyncStorage.setItem("token", data.token);
-      await AsyncStorage.setItem("expireDate", data.expireDate);
-
-      navigation.replace("Tabs", {screen: 'Exchanges'});
+      navigation.replace("Tabs", { screen: "Exchanges" });
       setError("");
-    } catch (error) {
-      ToastAndroid.show("Lütfen geçerli bir şifre girin", ToastAndroid.SHORT);
+    } 
+    catch (error) {
+      if (error.message) {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+        return;
+      } 
+      console.error("FetchLogin Error:", error.message);
     }
   };
 
   const handleRegister = () => {
     navigation.navigate("Register");
-    setEmailText('');
-    setPasswordText('');
-    setError('');
+    setEmailText("");
+    setPasswordText("");
+    setError("");
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate('ForgotPassword');
-    setEmailText('');
-    setPasswordText('');
-    setError('');
+    navigation.navigate("ForgotPassword");
+    setEmailText("");
+    setPasswordText("");
+    setError("");
   };
 
-
   return (
-    
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
@@ -110,21 +101,15 @@ const Index = ({ navigation }) => {
 
       <Text style={styles.error}>{error}</Text>
 
-      <ButtonAuth 
-      title={"Giriş"} 
-      onPress={handleLogin} 
-      color={"#2A629A"} />
+      <ButtonAuth title={"Giriş"} onPress={handleLogin} color={"#2A629A"} />
 
-      <ButtonAuth 
-      title={"Kayıt"} 
-      onPress={handleRegister} 
-      color={"#FF7F3E"} />
+      <ButtonAuth title={"Kayıt"} onPress={handleRegister} color={"#FF7F3E"} />
 
       <ForgotButton
-      title={'Şifremi Unuttum'}
-      color={'#FF7F3E'}
-      onPress={handleForgotPassword}/>
-      
+        title={"Şifremi Unuttum"}
+        color={"#FF7F3E"}
+        onPress={handleForgotPassword}
+      />
     </SafeAreaView>
   );
 };
@@ -139,7 +124,6 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     resizeMode: "contain",
-    backgroundColor: "#FFFFFF",
   },
   logoContainer: {
     alignItems: "center",

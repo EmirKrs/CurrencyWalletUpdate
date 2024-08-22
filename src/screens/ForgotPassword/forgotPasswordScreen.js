@@ -1,57 +1,34 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ToastAndroid,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, ToastAndroid, Image, KeyboardAvoidingView, Platform,} from "react-native";
 import React, { useState } from "react";
 //Components
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
-import appSettings from "../../../settings";
+import { forgotPassword } from "../../api/services/usersService";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
   const fetchForgotPassword = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/forgot-password`;
-
-    const encodedEmail = encodeURIComponent(email);
-
     try {
-      const response = await fetch(`${apiUrl}?mailAddress=${encodedEmail}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const responseStatus = response.status;
-
-      if (responseStatus == 200) {
-        ToastAndroid.show("Doğrulama kodu mail adresinize gönderildi",ToastAndroid.SHORT);
+      const encodedEmail = encodeURIComponent(email);
+      const statusCode = await forgotPassword(encodedEmail);
+      if (statusCode == 200) {
+        ToastAndroid.show("Doğrulama kodu mail adresinize gönderildi", ToastAndroid.SHORT);
         navigation.navigate("ApproveCode", { email });
         setEmail("");
-        return;
-      }
-      if (!(responseStatus == 200)) {
+      } else {
         ToastAndroid.show("Lütfen geçerli bir E-mail adresi giriniz",ToastAndroid.SHORT);
-        return;
       }
+      return;
     } catch (error) {
-      console.error("Hata:", error);
+      //console.error("Hata:", error);
+      ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
     }
   };
 
   const handleNext = () => {
     if (email == "") {
-      ToastAndroid.show(
-        "Lütfen E-mail alanını boş bırakmayınız.",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show( "Lütfen E-mail alanını boş bırakmayınız.",ToastAndroid.SHORT);
       return;
     }
     fetchForgotPassword();
@@ -60,18 +37,21 @@ const ForgotPasswordScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}>
-
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <View style={styles.logoContainer}>
         <Image
           source={require("../../../assets/forgot_password.png")}
-          style={styles.logo}>
-          </Image>
+          style={styles.logo}
+        ></Image>
       </View>
 
       <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
 
-      <Text style={styles.content}>E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol edin</Text>
+      <Text style={styles.content}>
+        E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol
+        edin
+      </Text>
 
       <InputAuth
         label={"E-mail"}
@@ -88,7 +68,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
         color={"#FF7F3E"}
         marginTop={10}
       />
-    
     </KeyboardAvoidingView>
   );
 };

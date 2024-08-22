@@ -55,9 +55,8 @@ const SplashScreen = ({ navigation }) => {
     }
     navigation.replace("Login");
   };
-
+  
   const refreshToken = async (oldToken) => {
-    console.log(`refreshToken metodu ESKI TOKEN DEGERI ${oldToken}`);
     try {
       const response = await fetch(`${apiUrl}/token/refresh`, {
         method: "GET",
@@ -73,7 +72,6 @@ const SplashScreen = ({ navigation }) => {
       }
       const newToken = data.token;
       const newExpireDate = data.expireDate;
-      console.log(`refreshToken metodu YENI TOKEN DEGERI ${data.token}`);
 
       await AsyncStorage.setItem("token", newToken);
       await AsyncStorage.setItem("expireDate", newExpireDate);

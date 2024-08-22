@@ -1,14 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import appSettings from "../../../settings";
+import { View, StyleSheet, ActivityIndicator, FlatList } from "react-native";
+import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
+import { portfolios } from "../../api/services/portfolioService";
 
 //Components
 import Item from "./Components/item";
@@ -19,38 +12,19 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [portfolioData, setPortfolioData] = useState("");
 
- useFocusEffect(
+  useFocusEffect(
     useCallback(() => {
       setLoading(true);
       fetchPortfolios();
     }, [])
-  ); 
+  );
 
-  // Fetch işlemi splash screen e atıalcak. Yönlendirme ise Splash screende fetch bittiğinde
-  // navigation.navigate('Portfolio', { data: result }); bu şekilde yapılacak
-  // bu ekranda ise route props olarak alınacak,  const { data } = route.params;
   const fetchPortfolios = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/portfolios`;
-    const token = await AsyncStorage.getItem("token");
-
     try {
-      setLoading(true);
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      setPortfolioData(data);
-
-      if (!response.ok) {
-        throw new Error("Portfolio Fetch Failed");
-      }
+      const response = await portfolios();
+      setPortfolioData(response);
     } catch (error) {
-      console.error("Portfolio Fetch Error:", error);
+      console.error("Fetch Portfolio: ", error);
     } finally {
       setLoading(false);
     }
@@ -63,15 +37,13 @@ const Index = () => {
       </View>
     );
   }
-  if(portfolioData && portfolioData.length <= 0) {
-    return(
-      <Message/>
-    );
+  if (portfolioData && portfolioData.length <= 0) {
+    return <Message />;
   }
 
   return (
     <View style={styles.flatListContainer}>
-     <Header/>
+      <Header />
       <FlatList
         data={portfolioData}
         keyExtractor={(item) => item.currencyId}

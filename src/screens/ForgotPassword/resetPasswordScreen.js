@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Platform, ToastAndroid } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Platform, ToastAndroid,} from "react-native";
+import React, { useState } from "react";
+import { CommonActions } from "@react-navigation/native";
+import { resetPassword } from "../../api/services/usersService";
+//Components
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
-import appSettings from "../../../settings";
-import { CommonActions } from "@react-navigation/native";
+
 
 const ResetPasswordScreen = ({ navigation, route }) => {
   const [newPassword, setNewPassword] = useState("");
@@ -12,57 +14,44 @@ const ResetPasswordScreen = ({ navigation, route }) => {
   const { email, recoveryCode } = route.params;
 
   const handleChangePassword = () => {
-    if(newPassword == '' || newPasswordCon == ''){
-      ToastAndroid.show('Lütfen boş alanları doldurunuz', ToastAndroid.SHORT);
+    if (newPassword == "" || newPasswordCon == "") {
+      ToastAndroid.show("Lütfen boş alanları doldurunuz", ToastAndroid.SHORT);
       return;
-    };
+    }
     fetchNewPassword();
   };
 
   const fetchNewPassword = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/reset-password`;
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          mailAddress: email,
-          recoveryCode: recoveryCode,
-          password: newPassword,
-          rePassword: newPasswordCon,
-        }),
-      });
+      const body = {
+        mailAddress: email,
+        recoveryCode: recoveryCode,
+        password: newPassword,
+        rePassword: newPasswordCon,
+      };
+      const response = await resetPassword(body);
 
-      const responseData =  await response.json();
-      console.log(responseData);
-
-      if (responseData == 200) {
-        ToastAndroid.show('Şifre başarıyla değiştirildi', ToastAndroid.SHORT);
+      if (response == 200) {
+        ToastAndroid.show("Şifre başarıyla değiştirildi", ToastAndroid.SHORT);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'Login'}],
+            routes: [{ name: "Login" }],
           })
-        )
-        return;
-      }
-      if(!responseData.IsSuccess) {
-        ToastAndroid.show(`${responseData.Messages[0]}`, ToastAndroid.SHORT);
+        );
         return;
       }
     } catch (error) {
-      console.error("Hata:", error);
+      //console.error('Hata: ', error);
+      ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
     }
   };
 
   return (
     <KeyboardAvoidingView
-    style={styles.container}
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-  >
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <View style={styles.logoContainer}>
         <Image
           source={require("../../../assets/new_password_logo.png")}

@@ -1,40 +1,21 @@
-import {
-  View,
-  Text,
-  Modal,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-  ToastAndroid,
-} from "react-native";
+import { View,Text, Modal, StyleSheet, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, ToastAndroid,} from "react-native";
 import React, { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import appSettings from "../../../../settings";
+import { buyCurrency, sellCurrency,} from "../../../api/services/walletService";
 
-const ModalComponent = ({
-  data,
-  visible,
-  setModalVisible,
-  modalBuyTitle,
-  title,
-  buy,
-  isSale,
-  navigation
-}) => {
+const ModalComponent = ({ data, visible, setModalVisible, modalBuyTitle, title, buy, isSale, navigation,}) => {
   const [unit, setUnit] = useState("");
-  const [currency, setCurrency] = useState('');
+  const [currency, setCurrency] = useState("");
 
   const closeModal = () => {
     setModalVisible(false);
-    setUnit('');
-    setCurrency('');
+    setUnit("");
+    setCurrency("");
   };
 
+  //Modal inputu adet/ücret fonksiyonu
   const handleAmountChange = (text) => {
-    let filteredText = text.replace(/[^0-9]/g, '');
-    if(isSale){
+    let filteredText = text.replace(/[^0-9]/g, "");
+    if (isSale) {
       const numericValue = parseFloat(filteredText) || 0;
       setUnit(filteredText);
       setCurrency((numericValue * data.buying).toFixed(2));
@@ -43,95 +24,49 @@ const ModalComponent = ({
       setUnit(filteredText);
       setCurrency((numericValue * data.selling).toFixed(2));
     }
-
   };
 
   const fetchBuyCurrency = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/buy-currency`;
-    const token = await AsyncStorage.getItem('token');
+    try {
+      const body = {
+        currencyId: `${data.id}`,
+        unit: unit,
+      };
+      const response = await buyCurrency(body);
 
-    try{
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-           Authorization: `Bearer ${token}`, 
-        },
-        body: JSON.stringify({
-          currencyId: `${data.id}`,
-          unit: unit,
-        }),
-      });
-
-      const res = await response.json();
-      console.log(res);
-
-      if(!response.ok){
-        if (res.Messages?.[0]) {
-          ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
-        } else {
-          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
-        }
+      if (response.isSuccess) {
+        ToastAndroid.show(response.messages?.[0], ToastAndroid.SHORT);
+        navigation.navigate("Wallet");
         return;
       }
-      if (!res.isSuccess) {
-        ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show(`${res.messages[0]}`, ToastAndroid.SHORT);
-  
-        navigation.navigate("Wallet");
-      }
-
-    }catch(error){
-      console.error('Buy Currency Error:', error);
+    } catch (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      //console.error('Sell Currency Error:', error.message);
     }
   };
 
   const fetchSellCurrency = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/sell-currency`;
-    const token = await AsyncStorage.getItem('token');
+    try {
+      const body = {
+        currencyId: `${data.id}`,
+        unit: unit,
+      };
+      const response = await sellCurrency(body);
 
-    try{
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-           Authorization: `Bearer ${token}`, 
-        },
-        body: JSON.stringify({
-          currencyId: `${data.id}`,
-          unit: unit,
-        }),
-      });
-
-      const res = await response.json();
-
-
-      if(!response.ok){
-        if (res.Messages?.[0]) {
-          ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
-        } else {
-          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
-        }
+      if (response.isSuccess) {
+        ToastAndroid.show(response.messages?.[0], ToastAndroid.SHORT);
+        navigation.navigate("Wallet");
         return;
       }
-      if (!res.isSuccess) {
-        ToastAndroid.show(`${res.Messages[0]}`,ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show(`${res.messages[0]}`, ToastAndroid.SHORT);
-        console.log(res);
-        navigation.navigate("Wallet");
-      }
-      
-
-    }catch(error){
-      console.error('Sell Currency Error:', error);
+    } catch (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      //console.error('Sell Currency Error:', error.message);
     }
   };
 
   const modalContinueButton = () => {
-    if(unit == '' || unit == 0){
-      ToastAndroid.show('Adet alanı boş olamaz',ToastAndroid.SHORT);
+    if (unit == "" || unit == 0) {
+      ToastAndroid.show("Adet alanı boş olamaz", ToastAndroid.SHORT);
       return;
     }
     if (modalBuyTitle === "Banka Alış") {
@@ -141,8 +76,8 @@ const ModalComponent = ({
       fetchBuyCurrency();
       setModalVisible(false);
     }
-    setUnit('');
-    setCurrency('');
+    setUnit("");
+    setCurrency("");
   };
 
   return (
@@ -150,8 +85,8 @@ const ModalComponent = ({
       animationType="slide"
       transparent={true}
       visible={visible}
-      onRequestClose={closeModal}>
-        
+      onRequestClose={closeModal}
+      >
       <KeyboardAvoidingView style={styles.modalOverlay}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -169,7 +104,9 @@ const ModalComponent = ({
               </View>
 
               <View style={styles.headerRight}>
-                <Text style={{ fontSize: 16, marginTop: 3 }}>{modalBuyTitle}</Text>
+                <Text style={{ fontSize: 16, marginTop: 3 }}>
+                  {modalBuyTitle}
+                </Text>
                 <Text style={{ fontSize: 16 }}>{buy}₺</Text>
               </View>
             </View>

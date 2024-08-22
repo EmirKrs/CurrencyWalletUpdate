@@ -1,16 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
-  ScrollView,
-  ToastAndroid,
-} from "react-native";
+import { View, StyleSheet, SafeAreaView, ActivityIndicator, FlatList, ToastAndroid,} from "react-native";
 import React, { useEffect, useState } from "react";
-import appSettings from "../../../settings";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
 import ModalComponent from "./Components/modal";
 import DetailItem from "./Components/detailItem";
@@ -19,6 +8,7 @@ import ButtonForm from "./Components/ButtonForm";
 import Chart from "./Components/Chart";
 import ListTitle from "./Components/ListTitle";
 import VoteForm from "./Components/VoteForm";
+import { currencyChart, currencyDaily,} from "../../api/services/currenciesService";
 
 const Index = ({ route, navigation }) => {
   const data = route.params;
@@ -51,92 +41,33 @@ const Index = ({ route, navigation }) => {
     setModalVisible(true);
   };
 
-  /* const fetchCurrencyData = async () => {
-    const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
-    const token = await AsyncStorage.getItem("token");
-
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        setCurrencyData(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  }; */
-
-  const fetchCurrencyData = async () => {
-    const url = `${appSettings.CurrencyExchangeWalletApiUrl}/currencies/${data.id}?day=15`;
-    const token = await AsyncStorage.getItem("token");
-
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      setCurrencyData(data);
-
-      if (!response.ok) {
-        throw new Error("Detail Fetch Failed");
-      }
-    } catch (error) {
-      ToastAndroid.show("Detail Fetch İşlemi", ToastAndroid.SHORT);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchChartData = async () => {
-    const url = `${appSettings.CurrencyExchangeWalletApiUrl}/charts/daily-currency-data?currencyCode=${data.code}&buySellType=1&day=10`;
-    const token = await AsyncStorage.getItem("token");
-
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        return response.json();
-      })
-      .then((chartData) => {
-        setChartData(chartData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  };
-
   useEffect(() => {
     fetchCurrencyData();
     fetchChartData();
   }, []);
+
+  const fetchCurrencyData = async () => {
+    try {
+      const response = await currencyDaily(data.id);
+      setCurrencyData(response);
+    } catch (error) {
+      console.error("Currency Fetch Error:", error);
+      ToastAndroid.show('Liste verileri yüklenirken bir hata oluştu.',ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
+    }
+  };
+   
+  const fetchChartData = async () => {
+    try {
+      const response = await currencyChart(data.code);
+      setChartData(response);
+    } catch (error) {
+      console.error("Chart Fetch Error:", error);
+      ToastAndroid.show('Chart verileri yüklenirken bir hata oluştu.',ToastAndroid.SHORT);
+    }
+  };
+
 
   if (loading) {
     return (

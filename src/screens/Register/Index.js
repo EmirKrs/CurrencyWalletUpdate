@@ -1,15 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, ToastAndroid,} from "react-native";
 import React, { useState } from "react";
+import { register } from "../../api/services/authService";
+import { validateEmail, validatePassword, validatePasswordCon, validatePhone } from "../../helpers/validationHelpers";
 //Components
-import appSettings from "../../../settings";
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
 
@@ -23,90 +16,60 @@ const Index = ({ navigation }) => {
   const [passwordConText, setPasswordConText] = useState("");
   const [error, setError] = useState("");
 
-  const validateEmail = (emailText) => {
-    const regex = /^\S+@\S+\.\S+$/;
-    return regex.test(emailText);
-  };
-
-  const validatePhone = (phoneText) => {
-    const regex = /^05\d{2}\d{3}\d{4}$/;
-    return regex.test(phoneText);
-  };
-
-  const validatePassword = (passwordText) => {
-    // Örnek validasyon: En az 6 karakter, büyük harf, küçük harf, rakam içermeli
-    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-    return regex.test(passwordText);
-  };
-
-  const validatePasswordCon = (passwordText, passwordConText) => {
-    return passwordText === passwordConText;
-  };
 
   const handleRegister = () => {
+    if(!nameText.trim() || !surnametext.trim() || !usernameText.trim()){
+      setError("Lütfen boş alan bırakmayınız.");
+      return;
+    }
     if (!validatePhone(phoneText)) {
       setError("Lütfen geçerli bir telefon numarası girin.");
       return;
     }
-
     if (!validateEmail(emailText)) {
       setError("Lütfen Geçerli bir email adresi girin.");
       return;
     }
-
     if (!validatePassword(passwordText)) {
-      setError(
-        "Şifreniz 6 karakterden uzun olmalı ve büyük harf, küçük harf, rakam içermelidir."
-      );
+      setError("Şifreniz 6 karakterden uzun olmalı ve büyük harf, küçük harf, rakam içermelidir.");
       return;
     }
-
     if (!validatePasswordCon(passwordText, passwordConText)) {
       setError("Şifreler uyuşmuyor.");
       return;
     }
 
-    postRegisterData();
+    fetchRegister();
     setError("");
   };
 
-  const postRegisterData = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/users/register`;
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: nameText,
-          surname: surnametext,
-          emailAddress: emailText,
-          phoneNumber: phoneText,
-          username: usernameText,
-          password: passwordText,
-        }),
-      });
+  const fetchRegister = async () => {
+    try{
+      const userData = {
+        name: nameText,
+        surname: surnametext,
+        emailAddress: emailText,
+        phoneNumber: phoneText,
+        username: usernameText,
+        password: passwordText,
+      };
 
-      const responseData = await response.json();
+      const response = await register(userData);
 
-      if (!response.ok) {
-        if (responseData.Messages?.[0]) {
-          ToastAndroid.show(`${responseData.Messages[0]}`,ToastAndroid.SHORT);
-        } else {
-          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
-        }
-        return;
-      }
-      if (!responseData.isSuccess) {
-        setError(responseData.Messages?.[0]);
+      if (response.isSuccess) {
+        ToastAndroid.show('Kayıt işlemi başarılı!', ToastAndroid.SHORT);
+        console.log(response);
+        navigation.navigate('Login');
       } else {
-        ToastAndroid.show("Kayıt işlemi başarılı!", ToastAndroid.SHORT);
-        console.log(responseData);
-        navigation.navigate("Login");
+        ToastAndroid.show(response.Messages?.[0] , ToastAndroid.SHORT);
       }
-    } catch (error) {
-      console.error("Hata:", error);
+    }
+    catch(error){
+      if (error.message) {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+        return;
+      } 
+      console.error("FetchLogin Error:", error.message);
     }
   };
 

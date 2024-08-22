@@ -15,6 +15,7 @@ import InputPayment from "./components/inputPayment";
 import ButtonPayment from "./components/buttonPayment";
 import HeaderPayment from "./components/headerPayment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { buyBalance } from "../../api/services/walletService";
 
 const Index = ({ navigation, route }) => {
   const [amount, setAmount] = useState("");
@@ -24,7 +25,7 @@ const Index = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
-
+  
   const { showComponent, buttonType } = route.params || {};
 
   const handlePay = () => {
@@ -45,7 +46,6 @@ const Index = ({ navigation, route }) => {
         screen: 'Portfolio',
       });
     }
-
   };
 
   const handleModalConfirm = () => {
@@ -53,55 +53,16 @@ const Index = ({ navigation, route }) => {
     setModalVisible(false);
   };
 
-  /*const cardDateChange = (input) => {
-    // Girdiyi sadece rakamlara indirgeme
-    let formattedInput = input.replace(/[^0-9]/g, '');
-
-    // AA/YY formatına uygun hale getirme
-    if (formattedInput.length > 2) {
-      let month = formattedInput.slice(0, 2);
-      let year = formattedInput.slice(2);
-
-      // Ay kısmını kontrol et
-      if (parseInt(month, 10) > 12) {
-        month = '12';
-      }
-
-      // Yıl kısmını kontrol et
-      if (year.length > 2) {
-        year = year.slice(0, 2);
-      }
-
-      if (parseInt(year, 10) > 30) {
-        year = '30';
-      }
-
-      formattedInput = `${month}/${year}`;
+  const handleAmountChange = (text) => {
+    if (/^\d*$/.test(text)) {
+      setAmount(text);
     }
-
-    setCardDate(formattedInput);
-  }; */
-
- /* const cardNumberChange = (input) => {
-    let formattedInput = input.replace(/\D/g, "");
-
-    formattedInput = formattedInput.match(/.{1,4}/g)?.join(" ") || "";
-    setCardNumber(formattedInput);
-  }; */
+  };
 
   const buyBalanceFetch = async() => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/buy-balance`
-    const token = await AsyncStorage.getItem('token');
-
     try{
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-           Authorization: `Bearer ${token}`, 
-        },
-        body: JSON.stringify({
-          amount: amount,
+      const body = {
+        amount: amount,
           cardInfo: {
             cardNumber: cardNumber,
             cardHolderName: cardNumber,
@@ -109,39 +70,25 @@ const Index = ({ navigation, route }) => {
             cardExpirationYear: 2026,
             cardExpirationMonth: 12
           }
-        }),
-      });
-
-      const buyBalance = await response.json();
-
-      if(!response.ok){
-        if (buyBalance.Messages?.[0]) {
-          ToastAndroid.show(`${buyBalance.Messages[0]}`,ToastAndroid.SHORT);
-        } else {
-          ToastAndroid.show(`Beklenmedik bir hata alındı.`, ToastAndroid.SHORT);
-        }
-        return;
-      }
-      if (!buyBalance.isSuccess) {
-        ToastAndroid.show(`${buyBalance.Messages[0]}`,ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show("Ödeme işlemi başarılı", ToastAndroid.SHORT);
-        console.log(buyBalance);
+      };
+      
+      const response = await buyBalance(body);
+      if (response.isSuccess) {
+        ToastAndroid.show(`${response.messages[0]}`, ToastAndroid.LONG);
         navigation.replace('Tabs', {
           screen: 'Wallet',
         });
+        return;
       }
-    }catch(error){
+    }
+    catch(error) {
+      if (error) {
+        ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
+        return;
+      } 
       console.error('Buy Balance Error:', error);
     }
   };
-
-  const handleAmountChange = (text) => {
-    if (/^\d*$/.test(text)) {
-      setAmount(text);
-    }
-  };
-  
 
   return (
     <View style={styles.container}>

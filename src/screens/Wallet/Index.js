@@ -1,19 +1,12 @@
-import {
-  View,
-  StyleSheet,
-  ToastAndroid,
-  FlatList,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, ToastAndroid, FlatList, Text, ActivityIndicator,} from "react-native";
 import React, { useCallback, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
+import { wallet, walletIsExist } from "../../api/services/walletService";
 //Components
-import appSettings from "../../../settings";
 import WalletCard from "./components/WalletCard";
 import ButtonCard from "./components/buttonCard";
 import Item from "./components/item";
+
 
 const Index = ({ navigation }) => {
   const [walletData, setWalletData] = useState("");
@@ -31,24 +24,10 @@ const Index = ({ navigation }) => {
   };
 
   const fetchWalletExist = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet/is-exist`;
-    const token = await AsyncStorage.getItem("token");
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Waller Exist Failed");
-      }
-
-      const isExist = await response.json();
-      return isExist.isSuccess;
+      const response = await walletIsExist();
+      console.log(response);
+      return response.isSuccess;
     } catch (error) {
       console.error("Wallet Exist Error:", error);
       return false;
@@ -56,26 +35,13 @@ const Index = ({ navigation }) => {
   };
 
   const fetchWallet = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/wallet`;
-    const token = await AsyncStorage.getItem("token");
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const walletData = await response.json();
-      setWalletData(walletData);
-
-      if (!response.ok) {
-        throw new Error("Wallet Fetch Failed");
-      }
+      const response = await wallet();
+      setWalletData(response);
     } catch (error) {
-      console.error("Wallet Fetch Error:", error);
+      console.error("Wallet Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,10 +50,8 @@ const Index = ({ navigation }) => {
       setLoading(true);
       const checkWalletExistence = async () => {
         const walletExist = await fetchWalletExist();
-
         if (walletExist) {
           await fetchWallet();
-          setLoading(false);
         } else {
           navigation.navigate("Payment", { showComponent: true });
         }

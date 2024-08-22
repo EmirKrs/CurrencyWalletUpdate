@@ -1,15 +1,10 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image,  ToastAndroid,} from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import appSettings from "../../../../settings";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addCurrency, deleteCurrency } from "../../../api/services/portfolioService";
+import { shortenName } from "../../../utils/stringUtils";
+import { formatNumber } from "../../../utils/numberUtils";
 
 const Item = ({ item, navigation }) => {
   const [favoriteColor, setFavoriteColor] = useState("black");
@@ -22,75 +17,32 @@ const Item = ({ item, navigation }) => {
     }
   }, []);
 
-  const maxLenght = 16;
-
-  const shortenName = (name) => {
-    if (name.length > maxLenght) {
-      return name.substring(0, maxLenght - 3) + "..."; // Son üç karakteri '...' olarak değiştir
-    }
-    return name;
-  };
-
-  const formatNumber = (number) => {
-    return number.toFixed(4);
-  };
-
-  const favoritePostFetch = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/portfolios/${item.id}`;
-    const token = await AsyncStorage.getItem("token");
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      console.log(data.messages);
-
+  const favoritePostFetch = async() => {
+    try{
+      const response = await addCurrency(item.id);
       ToastAndroid.show(
         `${item.code} para birimi portföye eklendi`,
         ToastAndroid.SHORT
       );
-
-      if (!response.ok) {
-        throw new Error("Favorite POST Failed");
-      }
-    } catch (error) {
+    }
+    catch(error){
       console.error("Favorite POST Error:", error);
     }
   };
 
-  const favoriteDeleteFetch = async () => {
-    const apiUrl = `${appSettings.CurrencyExchangeWalletApiUrl}/portfolios/${item.id}`;
-    const token = await AsyncStorage.getItem("token");
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      console.log(data.messages);
+  const favoriteDeleteFetch = async() => {
+    try{
+      const response = await deleteCurrency(item.id);
       ToastAndroid.show(
         `${item.code} para birimi portföyden kaldırıldı`,
         ToastAndroid.SHORT
       );
-
-      if (!response.ok) {
-        throw new Error("Favorite DELETE Failed");
-      }
-    } catch (error) {
-      console.error("Favorite DELETE Error:", error);
+    }
+    catch(error){
+      console.error("Favorite POST Error:", error);
     }
   };
+
 
   const handleFavorite = () => {
     if (favoriteColor == "black") {
