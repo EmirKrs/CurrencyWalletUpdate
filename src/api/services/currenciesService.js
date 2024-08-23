@@ -20,11 +20,7 @@ export const currencyChart = async (currencyCode) => {
         const response = await apiClient.get(`/currencies/${currencyId}?day=15`);
         return response.data;
       } catch (error) {
-        if (error.response) {
-          return Promise.reject(error.response.data.Messages?.[0] || "Beklenmedik bir hata alındı.");
-        } else {
-          return Promise.reject("Beklenmedik bir hata oluştu.");
-        }
+        return errorHandler(error);
       }
     };
 
@@ -34,11 +30,7 @@ export const currencyChart = async (currencyCode) => {
       const response = await apiClient.get(`/currencies`);
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return Promise.reject(error.response.data.Messages?.[0] || "Beklenmedik bir hata alındı.");
-      } else {
-        return Promise.reject("Beklenmedik bir hata oluştu.");
-      }
+      return errorHandler(error);
     }
   };
 

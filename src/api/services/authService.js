@@ -1,4 +1,5 @@
 import apiClient from "../clients/apiClient";
+import { errorHandler } from "../utils/errorHandler";
 
 // Login
 export const login = async (credentials) => {
@@ -6,11 +7,7 @@ export const login = async (credentials) => {
     const response = await apiClient.post("/auth/login", credentials);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject( error.response.data.Messages?.[0] || "Beklenmedik bir hata alındı.");
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };
 
@@ -20,11 +17,7 @@ export const register = async (userData) => {
     const response = await apiClient.post("/users/register", userData);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject( error.response.data.Messages?.[0] || "Beklenmedik bir hata alındı.");
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };
 
@@ -34,10 +27,6 @@ export const logout = async () => {
     const response = await apiClient.post("/auth/logout");
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject( error.response.data.Messages?.[0] || "Beklenmedik bir hata alındı." );
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };

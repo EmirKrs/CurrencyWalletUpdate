@@ -1,13 +1,15 @@
-import { StyleSheet, Image, Text, View, ToastAndroid } from "react-native";
+import { StyleSheet, Image, Text, View,} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { login } from "../../api/services/authService";
 import { validateEmail } from "../../helpers/validationHelpers";
+import testServiceTwo from "../../api/services/testServiceTwo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
 import InputAuth from "../../components/input/inputAuth";
 import ButtonAuth from "../../components/button/buttonAuth";
 import ForgotButton from "./components/forgotButton";
+import { login } from "../../api/services/authService";
+
 
 const Index = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
@@ -37,7 +39,7 @@ const Index = ({ navigation }) => {
     fetchLogin();
   };
 
-  const fetchLogin = async () => {
+ /* const fetchLogin = async () => {
     try {
       const credentials = {
         identity: emailText,
@@ -57,6 +59,25 @@ const Index = ({ navigation }) => {
         return;
       } 
       console.error("FetchLogin Error:", error.message);
+    }
+  }; */
+  
+  const fetchLogin = async() => {
+    try{
+      const credentials = {
+        identity: emailText,
+        password: passwordText,
+      };
+      const response = await login(credentials);
+
+      await AsyncStorage.setItem("token", response.token);
+      await AsyncStorage.setItem("expireDate", response.expireDate);
+
+      navigation.replace("Tabs", { screen: "Exchanges" });
+      setError("");
+    }
+    catch(error){
+      console.error('FetchLogin Error: ', error.message);
     }
   };
 

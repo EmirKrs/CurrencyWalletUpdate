@@ -6,11 +6,7 @@ export const userData = async () => {
       const response = await apiClient.get("/users/info");
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return Promise.reject(error.response.data.Messages?.[0] || "Profil bilgileri alınırken bir hata oluştu.");
-      } else {
-        return Promise.reject("Beklenmedik bir hata oluştu.");
-      }
+      return errorHandler(error);
     }
   };
 
@@ -20,11 +16,7 @@ export const userData = async () => {
       const response = await apiClient.put("/users/update-info", body);
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return Promise.reject(error.response.data.Messages?.[0] || "Profil verileri güncellenirken bir hata oluştu.");
-      }  else {
-        return Promise.reject("Beklenmedik bir hata oluştu.");
-      }
+      return errorHandler(error);
     }
   };
 
@@ -34,11 +26,7 @@ export const forgotPassword = async (encodedEmail) => {
     const response = await apiClient.get(`/users/forgot-password?mailAddress=${encodedEmail}`);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject(error.response.data.Messages?.[0] || "Email gönderme sırasında bir hata oluştu.");
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };
 
@@ -48,11 +36,7 @@ export const approveCode = async (approveCode, email) => {
     const response = await apiClient.get(`/users/check-approve-code?approveCode=${approveCode}&mailAddress=${email}`);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject(error.response.data.Messages?.[0] || "Onay kodu işlemi sırasında bir hata oluştu.");
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };
 
@@ -62,10 +46,6 @@ export const resetPassword = async (body) => {
     const response = await apiClient.post(`/users/reset-password`,body);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      return Promise.reject(error.response.data.Messages?.[0] || "Şifre yenileme işleminde bir hata oluştu.");
-    } else {
-      return Promise.reject("Beklenmedik bir hata oluştu.");
-    }
+    return errorHandler(error);
   }
 };
