@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { CommonActions } from "@react-navigation/native";
 import { resetPassword } from "../../api/services/usersService";
 //Components
-import InputAuth from "../../components/input/inputAuth";
-import ButtonAuth from "../../components/button/buttonAuth";
+import InputAuth from "../../components/inputs/inputAuth";
+import ButtonAuth from "../../components/buttons/buttonAuth";
 
 
 const ResetPasswordScreen = ({ navigation, route }) => {

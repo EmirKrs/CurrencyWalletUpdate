@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, ToastAndroid, Image, KeyboardAvoidingView, Platform,} from "react-native";
 import React, { useState } from "react";
 //Components
-import InputAuth from "../../components/input/inputAuth";
-import ButtonAuth from "../../components/button/buttonAuth";
+import InputAuth from "../../components/inputs/inputAuth";
+import ButtonAuth from "../../components/buttons/buttonAuth";
 import { forgotPassword } from "../../api/services/usersService";
 
 const ForgotPasswordScreen = ({ navigation }) => {

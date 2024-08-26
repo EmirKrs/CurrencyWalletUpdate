@@ -2,8 +2,8 @@ import { View, StyleSheet, KeyboardAvoidingView, Image, ToastAndroid, Platform, 
 import React, { useState } from "react";
 import { approveCode } from "../../api/services/usersService";
 //Components
-import InputAuth from "../../components/input/inputAuth";
-import ButtonAuth from "../../components/button/buttonAuth";
+import InputAuth from "../../components/inputs/inputAuth";
+import ButtonAuth from "../../components/buttons/buttonAuth";
 
 const ApproveCodeScreen = ({ navigation, route }) => {
   const { email } = route.params;

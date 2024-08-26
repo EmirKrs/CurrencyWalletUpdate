@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { register } from "../../api/services/authService";
 import { validateEmail, validatePassword, validatePasswordCon, validatePhone } from "../../helpers/validationHelpers";
 //Components
-import InputAuth from "../../components/input/inputAuth";
-import ButtonAuth from "../../components/button/buttonAuth";
+import InputAuth from "../../components/inputs/inputAuth";
+import ButtonAuth from "../../components/buttons/buttonAuth";
 
 const Index = ({ navigation }) => {
   const [nameText, setNameText] = useState("");

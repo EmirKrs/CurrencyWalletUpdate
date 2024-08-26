@@ -2,11 +2,10 @@ import { StyleSheet, Image, Text, View,} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { validateEmail } from "../../helpers/validationHelpers";
-import testServiceTwo from "../../api/services/testServiceTwo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //Components
-import InputAuth from "../../components/input/inputAuth";
-import ButtonAuth from "../../components/button/buttonAuth";
+import InputAuth from "../../components/inputs/inputAuth";
+import ButtonAuth from "../../components/buttons/buttonAuth";
 import ForgotButton from "./components/forgotButton";
 import { login } from "../../api/services/authService";
 

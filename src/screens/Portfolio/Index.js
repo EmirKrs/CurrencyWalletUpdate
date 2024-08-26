@@ -7,36 +7,39 @@ import { portfolios } from "../../api/services/portfolioService";
 import Item from "./Components/item";
 import Header from "./Components/header";
 import Message from "./Components/Message";
+import useLoadingOverlay from "../../hooks/useLoadingOverlay";
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
   const [portfolioData, setPortfolioData] = useState("");
-
+  useLoadingOverlay(loading);
+  
   useFocusEffect(
     useCallback(() => {
-      setLoading(true);
       fetchPortfolios();
     }, [])
   );
 
   const fetchPortfolios = async () => {
     try {
+      setLoading(true);
       const response = await portfolios();
       setPortfolioData(response);
     } catch (error) {
       console.error("Fetch Portfolio: ", error);
     } finally {
-      setLoading(false);
+    setLoading(false);
     }
   };
 
-  if (loading) {
+ /* if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#F4A261" />
       </View>
     );
-  }
+  }*/
+
   if (portfolioData && portfolioData.length <= 0) {
     return <Message />;
   }
