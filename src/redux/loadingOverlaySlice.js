@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const loadingOverlaySlice = createSlice({
+export const loadingOverlaySlice = createSlice({
   name: "loading",
   initialState: {
     isVisible: false,
@@ -14,4 +14,3 @@ const loadingOverlaySlice = createSlice({
 
 export const { setLoadingOverlay } = loadingOverlaySlice.actions;
 
-export default loadingOverlaySlice.reducer;

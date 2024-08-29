@@ -1,12 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { balanceNumberFormat } from "../../../utils/stringUtils";
+
 
 const WalletCard = ({data}) => {
-
-  const formatNumber = (num) => {
-    return num.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
 
   return (
     <View style={styles.card}>
@@ -19,15 +17,15 @@ const WalletCard = ({data}) => {
       <Text style={styles.title}>Balance</Text>
     </View>
 
-    <View style={{flexDirection: 'row', alignItems: 'center', width: '90%', justifyContent: 'space-between'}}>
+    <View style={styles.rowContainer}>
     <Text style={styles.text}>Varlık</Text>
-    <Text style={styles.balance}>{formatNumber(data.walletBalance)} ₺</Text>
+    <Text style={styles.balance}>{balanceNumberFormat(data.walletBalance)} ₺</Text>
 
     </View>
       
-    <View style={{flexDirection: 'row', alignItems: 'center', width: '90%',  justifyContent: 'space-between'}}>
+    <View style={styles.rowContainer}>
     <Text style={styles.text}>Bakiye</Text>
-    <Text style={styles.wallet}>{formatNumber(data.availableBalance)} ₺</Text>
+    <Text style={styles.wallet}>{balanceNumberFormat(data.availableBalance)} ₺</Text>
     </View>
 
     </View>
@@ -54,7 +52,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    
+  },
+  rowContainer:{
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    width: '90%',  
+    justifyContent: 'space-between',
   },
   balance: {
     fontSize: 28,

@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loadingOverlayReducer from "./loadingOverlaySlice";
+import { loadingOverlaySlice } from "./loadingOverlaySlice";
 
 const store = configureStore({
   reducer: {
-    loading: loadingOverlayReducer,
+    [loadingOverlaySlice.name]: loadingOverlaySlice.reducer,
   },
 });
 

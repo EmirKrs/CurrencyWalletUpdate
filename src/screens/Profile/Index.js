@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ActivityIndicator, ToastAndroid, TouchableOpacity, ScrollView,} from "react-native";
+import { View, Text, StyleSheet, ToastAndroid, TouchableOpacity, ScrollView,} from "react-native";
 import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -8,6 +8,7 @@ import InputProfile from "./Components/inputProfile";
 import ButtonProfile from "./Components/buttonProfile";
 import { userData, userUpdate } from "../../api/services/usersService";
 import { logout } from "../../api/services/authService";
+import useLoadingOverlay from "../../hooks/useLoadingOverlay";
 
 const Index = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -19,9 +20,17 @@ const Index = ({ navigation }) => {
     phoneNumber: "",
     username: "",
   });
+  useLoadingOverlay(loading);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
   const fetchUserData = async () => {
     try {
+      setLoading(true);
       const response = await userData();
       const { name, surname, emailAddress, phoneNumber, username } = response;
       const filteredUserData = {
@@ -48,6 +57,7 @@ const Index = ({ navigation }) => {
 
     } catch (error) {
       console.error("Logout Fetch Error:", error);
+      ToastAndroid.show('Çıkış yaparken bir hata oluştu', ToastAndroid.SHORT);
     }
   };
 
@@ -71,25 +81,18 @@ const Index = ({ navigation }) => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      setLoading(true);
-      fetchUserData();
-    }, [])
-  );
-
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async() => {
     // api POST işlemi
     // Hesap silinmeden önce Alert çıksın
     // tamam denildiğinde hesap silinsin
     ToastAndroid.show("Bu özellik Geliştirme Aşamasında", ToastAndroid.SHORT);
   };
 
-  const handleLogout = () => {
-    fetchLogout();
+  const handleLogout = async() => {
+    await fetchLogout();
   };
 
-  const handleUpdateProfile = () => {
+  const handleUpdateProfile = async() => {
     if (
       !userInfo.name.trim() ||
       !userInfo.surname.trim() ||
@@ -97,18 +100,12 @@ const Index = ({ navigation }) => {
       !userInfo.phoneNumber.trim() ||
       !userInfo.username.trim()
     ) {
-      ToastAndroid.show(
-        "Profil bölümünde boş alan bırakılamaz",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show("Profil bölümünde boş alan bırakılamaz",ToastAndroid.SHORT);
       return;
     } else if (!hasChanged) {
-      ToastAndroid.show(
-        "Herhangi bir değişiklik yapılmadı",
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show("Herhangi bir değişiklik yapılmadı",ToastAndroid.SHORT);
     } else {
-      fetchUpdateUser();
+      await fetchUpdateUser();
       setHasChanged(false);
     }
   };
@@ -120,14 +117,6 @@ const Index = ({ navigation }) => {
     }));
     setHasChanged(true);
   };
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F4A261" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -197,12 +186,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#FFFFFF",
   },
   buttonContainer: {

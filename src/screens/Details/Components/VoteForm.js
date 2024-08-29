@@ -39,6 +39,7 @@ const VoteForm = ({ data,}) => {
       const response = await fetchVoteService(data.id);
       setVotedData(response);
       setVoteRate(`%${response.increasesRate} Artan`);
+      console.log(response);
     } catch (error) {
       if (error) {
         ToastAndroid.show(`${error}`, ToastAndroid.SHORT);

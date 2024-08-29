@@ -1,5 +1,9 @@
-const formatNumber = (number) => {
-    return number.toFixed(4);
+export const formatNumber = (number) => {
+  let parsedNumber = Number(number);
+    return parsedNumber.toFixed(2);
   };
-  
-  export {formatNumber};
+
+  export const formatNumberFour = (number) => {
+     let parsedNumber = Number(number);
+    return parsedNumber.toFixed(4);
+  };

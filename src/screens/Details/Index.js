@@ -9,6 +9,7 @@ import Chart from "./Components/Chart";
 import ListTitle from "./Components/ListTitle";
 import VoteForm from "./Components/VoteForm";
 import { currencyChart, currencyDaily,} from "../../api/services/currenciesService";
+import { formatNumber } from "../../utils/numberUtils";
 
 const Index = ({ route, navigation }) => {
   const data = route.params;
@@ -20,10 +21,6 @@ const Index = ({ route, navigation }) => {
   const [currencyData, setCurrencyData] = useState("");
   const [chartData, setChartData] = useState("");
   const [isSale, setIsSale] = useState(true);
-
-  const formatNumber = (number) => {
-    return number.toFixed(2);
-  };
 
   const openModal = (buttonType) => {
     if (buttonType == false) {

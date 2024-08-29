@@ -32,14 +32,6 @@ const Index = () => {
     }
   };
 
- /* if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F4A261" />
-      </View>
-    );
-  }*/
-
   if (portfolioData && portfolioData.length <= 0) {
     return <Message />;
   }

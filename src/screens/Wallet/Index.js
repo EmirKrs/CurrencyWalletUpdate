@@ -1,4 +1,4 @@
-import { View, StyleSheet, ToastAndroid, FlatList, Text, ActivityIndicator,} from "react-native";
+import { View, StyleSheet, ToastAndroid, FlatList, Text,} from "react-native";
 import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { wallet, walletIsExist } from "../../api/services/walletService";
@@ -6,17 +6,16 @@ import { wallet, walletIsExist } from "../../api/services/walletService";
 import WalletCard from "./components/WalletCard";
 import ButtonCard from "./components/buttonCard";
 import Item from "./components/item";
+import useLoadingOverlay from "../../hooks/useLoadingOverlay";
 
 
 const Index = ({ navigation }) => {
   const [walletData, setWalletData] = useState("");
   const [loading, setLoading] = useState(true);
+  useLoadingOverlay(loading);
 
   const handleAddMoney = () => {
-    navigation.navigate("Payment", {
-      showComponent: false,
-      buttonType: "wallet",
-    });
+    navigation.navigate("Payment", {showComponent: false, buttonType: "wallet",});
   };
 
   const handleWithdrawMoney = () => {
@@ -25,6 +24,7 @@ const Index = ({ navigation }) => {
 
   const fetchWalletExist = async () => {
     try {
+      setLoading(true);
       const response = await walletIsExist();
       console.log(response);
       return response.isSuccess;
@@ -38,6 +38,7 @@ const Index = ({ navigation }) => {
     try {
       const response = await wallet();
       setWalletData(response);
+      console.log(response);
     } catch (error) {
       console.error("Wallet Error:", error);
     } finally {
@@ -47,7 +48,6 @@ const Index = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      setLoading(true);
       const checkWalletExistence = async () => {
         const walletExist = await fetchWalletExist();
         if (walletExist) {
@@ -59,14 +59,6 @@ const Index = ({ navigation }) => {
       checkWalletExistence();
     }, [])
   );
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F4A261" />
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>
@@ -109,12 +101,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
   },
   text: {
     fontSize: 16,

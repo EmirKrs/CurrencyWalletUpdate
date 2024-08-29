@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl, ToastAndroid,} from "react-native";
+import { View, Text, StyleSheet, FlatList, RefreshControl, ToastAndroid,} from "react-native";
 import { allCurrencies } from "../../api/services/currenciesService";
 import Item from "./components/Item";
+import useLoadingOverlay from "../../hooks/useLoadingOverlay";
 
 const Index = ({ navigation }) => {
   const [currenciesData, setCurrenciesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
+  useLoadingOverlay(loading);
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString("tr-TR", {
     hour: "2-digit",
@@ -37,14 +39,6 @@ const Index = ({ navigation }) => {
     fetchCurrenciesData();
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F4A261" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.flatListContainer}>
       <View style={styles.textContainer}>
@@ -64,12 +58,6 @@ const Index = ({ navigation }) => {
 const styles = StyleSheet.create({
   textContainer: {
     padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-  },
-  loadingContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFFFF",

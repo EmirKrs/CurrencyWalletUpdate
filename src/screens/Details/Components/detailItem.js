@@ -1,15 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import { formatNumber } from '../../../utils/numberUtils';
 
 const DetailItem = ({item}) => {
 
   const getOnlyDate = (dateString) => {
     const dateObj = new Date(dateString);
     return dateObj.toLocaleDateString('tr-TR')
-  };
-
-  const formatNumber = (number) => {
-    return number.toFixed(2);
   };
 
   return (

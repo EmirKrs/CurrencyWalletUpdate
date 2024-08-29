@@ -1,11 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import { formatNumber } from '../../../utils/numberUtils';
 
 const Item = ({ item,}) => {
-
-  const formatNumber = (number) => {
-    return number.toFixed(2);
-  };
 
   return (
       <View style= {styles.itemContainer}>

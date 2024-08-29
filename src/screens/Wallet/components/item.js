@@ -1,11 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
+import { formatNumber } from "../../../utils/numberUtils";
 
-const Item = ({ item, navigation}) => {
-  
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
+const Item = ({ item}) => {
 
   return (
 
@@ -24,8 +21,8 @@ const Item = ({ item, navigation}) => {
 
         <View style={styles.contentContainer}>
           <Text style={styles.content}>{item.unit}</Text>
-          <Text style={styles.content}>{item.unitPrice}₺</Text>
-          <Text style={styles.content}>{item.totalAmount}₺</Text>
+          <Text style={styles.content}>{formatNumber(item.unitPrice)}₺</Text>
+          <Text style={styles.content}>{formatNumber(item.totalAmount)}₺</Text>
         </View>
       </View>
     </View>

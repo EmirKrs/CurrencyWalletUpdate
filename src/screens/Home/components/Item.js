@@ -4,7 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import appSettings from "../../../../settings";
 import { addCurrency, deleteCurrency } from "../../../api/services/portfolioService";
 import { shortenName } from "../../../utils/stringUtils";
-import { formatNumber } from "../../../utils/numberUtils";
+import { formatNumber, formatNumberFour } from "../../../utils/numberUtils";
 
 const Item = ({ item, navigation }) => {
   const [favoriteColor, setFavoriteColor] = useState("black");
@@ -94,12 +94,12 @@ const Item = ({ item, navigation }) => {
         <View style={styles.itemDownContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>Alış</Text>
-            <Text style={styles.textNum}>{formatNumber(item.buying)}₺</Text>
+            <Text style={styles.textNum}>{formatNumberFour(item.buying)}₺</Text>
           </View>
 
           <View style={styles.textContainer}>
             <Text style={styles.text}>Satış</Text>
-            <Text style={styles.textNum}>{formatNumber(item.selling)}₺</Text>
+            <Text style={styles.textNum}>{formatNumberFour(item.selling)}₺</Text>
           </View>
         </View>
       </TouchableOpacity>
