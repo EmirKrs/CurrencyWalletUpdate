@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
   },
-
   flatListContainer: {
     height: "25%",
     backgroundColor: "#F3F8F8",

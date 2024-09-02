@@ -10,6 +10,7 @@ const Index = ({ navigation }) => {
   const [refresh, setRefresh] = useState(false);
 
   useLoadingOverlay(loading);
+  
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString("tr-TR", {
     hour: "2-digit",

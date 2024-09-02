@@ -1,4 +1,4 @@
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal} from "react-native";
 import React from "react";
 import { ActivityIndicator} from "react-native-paper";
 import { useSelector } from "react-redux";

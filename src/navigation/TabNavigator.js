@@ -14,6 +14,13 @@ function TabNavigator() {
       screenOptions={({ route }) => ({
         headerTitleAlign: "center",
         tabBarActiveTintColor: "#FF7F3E",
+        tabBarLabelStyle: {
+          fontSize: 11,
+          marginBottom: 2,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
+        },
         tabBarInactiveTintColor: "gray",
         tabBarIcon: ({ color, size }) => {
           let iconName;

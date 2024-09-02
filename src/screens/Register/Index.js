@@ -65,11 +65,12 @@ const Index = ({ navigation }) => {
       }
     }
     catch(error){
-      if (error.message) {
-        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      console.log(error);
+      if (error) {
+        ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
         return;
       } 
-      console.error("FetchLogin Error:", error.message);
+      console.error("FetchLogin Error:", error);
     }
   };
 

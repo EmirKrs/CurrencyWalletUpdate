@@ -9,6 +9,6 @@ export const shortenName = (name) => {
   export const balanceNumberFormat = (num) => {
     if(num === undefined){
       return;
-    }
+    } 
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };

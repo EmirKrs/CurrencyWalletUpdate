@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Text, View,} from "react-native";
+import { StyleSheet, Image, Text, View, ToastAndroid,} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { validateEmail } from "../../helpers/validationHelpers";
@@ -37,29 +37,6 @@ const Index = ({ navigation }) => {
 
     fetchLogin();
   };
-
- /* const fetchLogin = async () => {
-    try {
-      const credentials = {
-        identity: emailText,
-        password: passwordText,
-      };
-      const response = await login(credentials);
-
-      await AsyncStorage.setItem("token", response.token);
-      await AsyncStorage.setItem("expireDate", response.expireDate);
-
-      navigation.replace("Tabs", { screen: "Exchanges" });
-      setError("");
-    } 
-    catch (error) {
-      if (error.message) {
-        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
-        return;
-      } 
-      console.error("FetchLogin Error:", error.message);
-    }
-  }; */
   
   const fetchLogin = async() => {
     try{
@@ -74,9 +51,14 @@ const Index = ({ navigation }) => {
 
       navigation.replace("Tabs", { screen: "Exchanges" });
       setError("");
+      
     }
     catch(error){
-      console.error('FetchLogin Error: ', error.message);
+      if (error) {
+        ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
+        return;
+      } 
+      console.error("FetchLogin Error:", error);
     }
   };
 

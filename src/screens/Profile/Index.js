@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, ToastAndroid, TouchableOpacity, ScrollView,} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ToastAndroid,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -54,10 +61,9 @@ const Index = ({ navigation }) => {
       await AsyncStorage.removeItem("token");
       ToastAndroid.show("Çıkış Yapıldı", ToastAndroid.SHORT);
       navigation.replace("Login");
-
     } catch (error) {
       console.error("Logout Fetch Error:", error);
-      ToastAndroid.show('Çıkış yaparken bir hata oluştu', ToastAndroid.SHORT);
+      ToastAndroid.show("Çıkış yaparken bir hata oluştu", ToastAndroid.SHORT);
     }
   };
 
@@ -81,18 +87,18 @@ const Index = ({ navigation }) => {
     }
   };
 
-  const handleDeleteAccount = async() => {
+  const handleDeleteAccount = async () => {
     // api POST işlemi
     // Hesap silinmeden önce Alert çıksın
     // tamam denildiğinde hesap silinsin
     ToastAndroid.show("Bu özellik Geliştirme Aşamasında", ToastAndroid.SHORT);
   };
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await fetchLogout();
   };
 
-  const handleUpdateProfile = async() => {
+  const handleUpdateProfile = async () => {
     if (
       !userInfo.name.trim() ||
       !userInfo.surname.trim() ||
@@ -100,10 +106,16 @@ const Index = ({ navigation }) => {
       !userInfo.phoneNumber.trim() ||
       !userInfo.username.trim()
     ) {
-      ToastAndroid.show("Profil bölümünde boş alan bırakılamaz",ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Profil bölümünde boş alan bırakılamaz",
+        ToastAndroid.SHORT
+      );
       return;
     } else if (!hasChanged) {
-      ToastAndroid.show("Herhangi bir değişiklik yapılmadı",ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Herhangi bir değişiklik yapılmadı",
+        ToastAndroid.SHORT
+      );
     } else {
       await fetchUpdateUser();
       setHasChanged(false);

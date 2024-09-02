@@ -26,7 +26,6 @@ const Index = ({ navigation }) => {
     try {
       setLoading(true);
       const response = await walletIsExist();
-      console.log(response);
       return response.isSuccess;
     } catch (error) {
       console.error("Wallet Exist Error:", error);
@@ -38,7 +37,6 @@ const Index = ({ navigation }) => {
     try {
       const response = await wallet();
       setWalletData(response);
-      console.log(response);
     } catch (error) {
       console.error("Wallet Error:", error);
     } finally {
@@ -49,11 +47,15 @@ const Index = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       const checkWalletExistence = async () => {
-        const walletExist = await fetchWalletExist();
-        if (walletExist) {
-          await fetchWallet();
-        } else {
-          navigation.navigate("Payment", { showComponent: true });
+        try {
+          const walletExist = await fetchWalletExist();
+          if (walletExist) {
+            await fetchWallet();
+          } else {
+            navigation.navigate('Payment', { showComponent: true });
+          }
+        } catch (error) {
+          console.error('Check Wallet Error:', error);
         }
       };
       checkWalletExistence();

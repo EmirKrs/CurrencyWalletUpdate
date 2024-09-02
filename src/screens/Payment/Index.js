@@ -3,18 +3,15 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Button,
   Modal,
   ToastAndroid,
 } from "react-native";
 import React, { useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import appSettings from "../../../settings";
 //Components
 import InputPayment from "./components/inputPayment";
 import ButtonPayment from "./components/buttonPayment";
 import HeaderPayment from "./components/headerPayment";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { buyBalance } from "../../api/services/walletService";
 
 const Index = ({ navigation, route }) => {
@@ -25,11 +22,17 @@ const Index = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
-  
+
   const { showComponent, buttonType } = route.params || {};
 
   const handlePay = () => {
-    if (amount == '' || cardNumber== '' || cardDate == '/' || cardDate == '' || cardSecure== '') {
+    if (
+      amount == "" ||
+      cardNumber == "" ||
+      cardDate == "/" ||
+      cardDate == "" ||
+      cardSecure == ""
+    ) {
       ToastAndroid.show("Lütfen boş alan bırakmayın", ToastAndroid.SHORT);
       return;
     }
@@ -37,13 +40,13 @@ const Index = ({ navigation, route }) => {
   };
 
   const handleCancel = () => {
-    if(buttonType== 'wallet'){
-      navigation.replace('Tabs', {
-        screen: 'Wallet',
+    if (buttonType == "wallet") {
+      navigation.replace("Tabs", {
+        screen: "Wallet",
       });
-    }else{
-      navigation.replace('Tabs', {
-        screen: 'Portfolio',
+    } else {
+      navigation.replace("Tabs", {
+        screen: "Portfolio",
       });
     }
   };
@@ -59,34 +62,33 @@ const Index = ({ navigation, route }) => {
     }
   };
 
-  const buyBalanceFetch = async() => {
-    try{
+  const buyBalanceFetch = async () => {
+    try {
       const body = {
         amount: amount,
-          cardInfo: {
-            cardNumber: cardNumber,
-            cardHolderName: cardNumber,
-            cardSecurityCode: cardSecure,
-            cardExpirationYear: 2026,
-            cardExpirationMonth: 12
-          }
+        cardInfo: {
+          cardNumber: cardNumber,
+          cardHolderName: cardNumber,
+          cardSecurityCode: cardSecure,
+          cardExpirationYear: 2026,
+          cardExpirationMonth: 12,
+        },
       };
-      
+
       const response = await buyBalance(body);
       if (response.isSuccess) {
         ToastAndroid.show(`${response.messages[0]}`, ToastAndroid.LONG);
-        navigation.replace('Tabs', {
-          screen: 'Wallet',
+        navigation.replace("Tabs", {
+          screen: "Wallet",
         });
         return;
       }
-    }
-    catch(error) {
+    } catch (error) {
       if (error) {
         ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
         return;
-      } 
-      console.error('Buy Balance Error:', error);
+      }
+      console.error("Buy Balance Error:", error);
     }
   };
 
@@ -99,7 +101,7 @@ const Index = ({ navigation, route }) => {
           title={"Tutar"}
           value={amount}
           maxLength={9}
-          placeHolder={'Tutar'}
+          placeHolder={"Tutar"}
           onChangeText={handleAmountChange}
         />
 
@@ -111,9 +113,9 @@ const Index = ({ navigation, route }) => {
           onChangeText={(cardNumber) => setCardNumber(cardNumber)}
         />
 
-        <TouchableOpacity 
-        activeOpacity={1}
-        onPress={() => setModalVisible(true)}
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setModalVisible(true)}
         >
           <InputPayment
             title={"Son Kullanma Tarihi"}
@@ -189,19 +191,20 @@ const Index = ({ navigation, route }) => {
               value={selectedYear}
             />
             <View style={styles.modalButtonContainer}>
-            <TouchableOpacity
+              <TouchableOpacity
                 onPress={() => setModalVisible(false)}
-                style={styles.modalButton}>
+                style={styles.modalButton}
+              >
                 <Text style={styles.modalButtonTitle}>İptal</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleModalConfirm}
-                style={styles.modalButton}>
+                style={styles.modalButton}
+              >
                 <Text style={styles.modalButtonTitle}>Tamam</Text>
               </TouchableOpacity>
             </View>
-            
           </View>
         </View>
       </Modal>
@@ -245,17 +248,17 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     marginHorizontal: 10,
-    backgroundColor: '#9BB8CD',
-    width: '35%',
+    backgroundColor: "#9BB8CD",
+    width: "35%",
     padding: 8,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalButtonTitle: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#FFFFFF'
+    fontWeight: "500",
+    color: "#FFFFFF",
   },
   modalTitle: {
     fontSize: 18,

@@ -1,4 +1,5 @@
 import apiClient from "../clients/apiClient";
+import { errorHandler } from "../utils/errorHandler";
 
 // Buy Balance
 export const buyBalance = async (body) => {
