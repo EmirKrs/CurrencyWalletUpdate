@@ -1,4 +1,4 @@
-import { View, StyleSheet, KeyboardAvoidingView, Image, ToastAndroid, Platform, Text,} from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, Image, ToastAndroid, Platform, Text, ScrollView,} from "react-native";
 import React, { useState } from "react";
 import { approveCode } from "../../api/services/usersService";
 //Components
@@ -27,7 +27,10 @@ const ApproveCodeScreen = ({ navigation, route }) => {
 
       if (response.isApproved) {
         ToastAndroid.show("Kod onaylandı", ToastAndroid.SHORT);
-        navigation.navigate("ResetPassword", {email, recoveryCode: response.recoveryCode,});
+        navigation.navigate("ResetPassword", {
+          email,
+          recoveryCode: response.recoveryCode,
+        });
         setCodeText("");
       } else {
         ToastAndroid.show(`Lütfen geçerli kodu girin`, ToastAndroid.SHORT);
@@ -44,32 +47,37 @@ const ApproveCodeScreen = ({ navigation, route }) => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../../../assets/approve_code_logo.png")}
-          style={styles.logo}
-        ></Image>
-      </View>
+      <ScrollView style={{ width: "100%" }}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../../assets/approve_code_logo.png")}
+            style={styles.logo}
+          ></Image>
+        </View>
 
-      <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
+        <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
 
-      <Text style={styles.content}> E-mail adresinize gelen 6 haneli onay kodunu girin </Text>
+        <Text style={styles.content}>
+          {" "}
+          E-mail adresinize gelen 6 haneli onay kodunu girin{" "}
+        </Text>
 
-      <InputAuth
-        label={"Onay Kodu"}
-        value={codeText}
-        maxLength={6}
-        keyboardType={"numeric"}
-        secureTextEntry={false}
-        onchangeText={(codeText) => setCodeText(codeText)}
-      />
+        <InputAuth
+          label={"Onay Kodu"}
+          value={codeText}
+          maxLength={6}
+          keyboardType={"numeric"}
+          secureTextEntry={false}
+          onchangeText={(codeText) => setCodeText(codeText)}
+        />
 
-      <ButtonAuth
-        title={"Sonraki"}
-        onPress={handleNext}
-        color={"#FF7F3E"}
-        marginTop={10}
-      />
+        <ButtonAuth
+          title={"Sonraki"}
+          onPress={handleNext}
+          color={"#FF7F3E"}
+          marginTop={10}
+        />
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

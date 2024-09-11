@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ToastAndroid, Image, KeyboardAvoidingView, Platform,} from "react-native";
+import { View, Text, StyleSheet, ToastAndroid, Image, KeyboardAvoidingView, Platform, ScrollView,} from "react-native";
 import React, { useState } from "react";
 //Components
 import InputAuth from "../../components/inputs/inputAuth";
@@ -13,11 +13,17 @@ const ForgotPasswordScreen = ({ navigation }) => {
       const encodedEmail = encodeURIComponent(email);
       const statusCode = await forgotPassword(encodedEmail);
       if (statusCode == 200) {
-        ToastAndroid.show("Doğrulama kodu mail adresinize gönderildi", ToastAndroid.SHORT);
+        ToastAndroid.show(
+          "Doğrulama kodu mail adresinize gönderildi",
+          ToastAndroid.SHORT
+        );
         navigation.navigate("ApproveCode", { email });
         setEmail("");
       } else {
-        ToastAndroid.show("Lütfen geçerli bir E-mail adresi giriniz",ToastAndroid.SHORT);
+        ToastAndroid.show(
+          "Lütfen geçerli bir E-mail adresi giriniz",
+          ToastAndroid.SHORT
+        );
       }
       return;
     } catch (error) {
@@ -28,7 +34,10 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   const handleNext = () => {
     if (email == "") {
-      ToastAndroid.show( "Lütfen E-mail alanını boş bırakmayınız.",ToastAndroid.SHORT);
+      ToastAndroid.show(
+        "Lütfen E-mail alanını boş bırakmayınız.",
+        ToastAndroid.SHORT
+      );
       return;
     }
     fetchForgotPassword();
@@ -39,35 +48,37 @@ const ForgotPasswordScreen = ({ navigation }) => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../../../assets/forgot_password.png")}
-          style={styles.logo}
-        ></Image>
-      </View>
+      <ScrollView style={{ width: "100%" }}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../../assets/forgot_password.png")}
+            style={styles.logo}
+          ></Image>
+        </View>
 
-      <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
+        <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
 
-      <Text style={styles.content}>
-        E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol
-        edin
-      </Text>
+        <Text style={styles.content}>
+          E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol
+          edin
+        </Text>
 
-      <InputAuth
-        label={"E-mail"}
-        value={email}
-        maxLength={30}
-        keyboardType={"email-address"}
-        secureTextEntry={false}
-        onchangeText={(email) => setEmail(email)}
-      />
+        <InputAuth
+          label={"E-mail"}
+          value={email}
+          maxLength={30}
+          keyboardType={"email-address"}
+          secureTextEntry={false}
+          onchangeText={(email) => setEmail(email)}
+        />
 
-      <ButtonAuth
-        title={"Sonraki"}
-        onPress={handleNext}
-        color={"#FF7F3E"}
-        marginTop={10}
-      />
+        <ButtonAuth
+          title={"Sonraki"}
+          onPress={handleNext}
+          color={"#FF7F3E"}
+          marginTop={10}
+        />
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

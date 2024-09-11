@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Platform, ToastAndroid,} from "react-native";
+import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Platform, ToastAndroid, ScrollView,} from "react-native";
 import React, { useState } from "react";
 import { CommonActions } from "@react-navigation/native";
 import { resetPassword } from "../../api/services/usersService";
 //Components
 import InputAuth from "../../components/inputs/inputAuth";
 import ButtonAuth from "../../components/buttons/buttonAuth";
-
 
 const ResetPasswordScreen = ({ navigation, route }) => {
   const [newPassword, setNewPassword] = useState("");
@@ -52,41 +51,43 @@ const ResetPasswordScreen = ({ navigation, route }) => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../../../assets/new_password_logo.png")}
-          style={styles.logo}
-        ></Image>
-      </View>
+      <ScrollView style={{ width: "100%" }}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../../assets/new_password_logo.png")}
+            style={styles.logo}
+          ></Image>
+        </View>
 
-      <Text style={styles.title}>YENİ ŞİFRE OLUŞTURUNUZ</Text>
+        <Text style={styles.title}>YENİ ŞİFRE OLUŞTURUNUZ</Text>
 
-      <Text style={styles.content}>
-        Oluşturduğunuz yeni şifreyi aşağıdaki alana girebilirsiniz
-      </Text>
+        <Text style={styles.content}>
+          Oluşturduğunuz yeni şifreyi aşağıdaki alana girebilirsiniz
+        </Text>
 
-      <InputAuth
-        label={"Yeni Şifre"}
-        value={newPassword}
-        keyboardType={"default"}
-        secureTextEntry={true}
-        onchangeText={(newPassword) => setNewPassword(newPassword)}
-      />
+        <InputAuth
+          label={"Yeni Şifre"}
+          value={newPassword}
+          keyboardType={"default"}
+          secureTextEntry={true}
+          onchangeText={(newPassword) => setNewPassword(newPassword)}
+        />
 
-      <InputAuth
-        label={"Yeni Şifre Tekrar"}
-        value={newPasswordCon}
-        keyboardType={"default"}
-        secureTextEntry={true}
-        onchangeText={(newPasswordCon) => setNewPasswordCon(newPasswordCon)}
-      />
+        <InputAuth
+          label={"Yeni Şifre Tekrar"}
+          value={newPasswordCon}
+          keyboardType={"default"}
+          secureTextEntry={true}
+          onchangeText={(newPasswordCon) => setNewPasswordCon(newPasswordCon)}
+        />
 
-      <ButtonAuth
-        title={"Sonraki"}
-        onPress={handleChangePassword}
-        color={"#FF7F3E"}
-        marginTop={10}
-      />
+        <ButtonAuth
+          title={"Sonraki"}
+          onPress={handleChangePassword}
+          color={"#FF7F3E"}
+          marginTop={10}
+        />
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

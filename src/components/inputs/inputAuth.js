@@ -2,14 +2,14 @@ import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { TextInput } from 'react-native-paper';
 
-const InputAuth = ({label, value, maxLength, keyboardType, secureTextEntry, onchangeText}) => {
+const InputAuth = ({label, value, maxLength, marginTop=20, keyboardType, secureTextEntry, onchangeText}) => {
   return (
     <View style={styles.container}>
       <TextInput
         label={label}
         value={value}
         maxLength={maxLength}
-        style={styles.input}
+        style={[styles.input, {marginTop}]}
         mode="outlined"
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
       },
       input: {
         width: "90%",
-        marginTop: 20,
       },
 });
 

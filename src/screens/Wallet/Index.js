@@ -7,6 +7,7 @@ import WalletCard from "./components/WalletCard";
 import ButtonCard from "./components/buttonCard";
 import Item from "./components/item";
 import useLoadingOverlay from "../../hooks/useLoadingOverlay";
+import { StatusBar } from "expo-status-bar";
 
 
 const Index = ({ navigation }) => {
@@ -65,7 +66,6 @@ const Index = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <WalletCard data={walletData} />
-
       <View style={styles.buttonContainer}>
         <ButtonCard
           title={"Yükle"}

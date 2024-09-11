@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Text, View, ToastAndroid,} from "react-native";
+import { StyleSheet, Image, Text, View, ToastAndroid, KeyboardAvoidingView, Platform, ScrollView, Dimensions,} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { validateEmail } from "../../helpers/validationHelpers";
@@ -9,6 +9,7 @@ import ButtonAuth from "../../components/buttons/buttonAuth";
 import ForgotButton from "./components/forgotButton";
 import { login } from "../../api/services/authService";
 
+const {width, height} = Dimensions.get('window');
 
 const Index = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
@@ -77,7 +78,13 @@ const Index = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{flex:1, backgroundColor: '#fff'}}>
+      <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+        <ScrollView 
+        style={{width:'100%'}}
+        contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
       <View style={styles.logoContainer}>
         <Image
           source={require("../../../assets/logo1.png")}
@@ -88,6 +95,7 @@ const Index = ({ navigation }) => {
       <InputAuth
         label={"Email"}
         value={emailText}
+        marginTop={0}
         keyboardType={"email-address"}
         secureTextEntry={false}
         onchangeText={(emailText) => setEmailText(emailText)}
@@ -112,6 +120,8 @@ const Index = ({ navigation }) => {
         color={"#FF7F3E"}
         onPress={handleForgotPassword}
       />
+      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -124,14 +134,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   logo: {
-    width: "100%",
+    width: width*1,
+    height: height*0.4,  
     resizeMode: "contain",
   },
   logoContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
-    height: "35%",
+    width: width*1,
+    height: height*0.4,
     marginBottom: 30,
   },
   error: {
