@@ -1,14 +1,17 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image,  ToastAndroid,} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid, } from "react-native";
 import React, { useEffect, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import appSettings from "../../../../settings";
 import { addCurrency, deleteCurrency } from "../../../api/services/portfolioService";
 import { shortenName } from "../../../utils/stringUtils";
 import { formatNumber, formatNumberFour } from "../../../utils/numberUtils";
+import { useDispatch } from "react-redux";
+import { portfolioSlice } from "../../../redux/PortfolioRedux";
 
 const Item = ({ item, navigation }) => {
   const [favoriteColor, setFavoriteColor] = useState("black");
   const [favoriteIconType, setFavoriteIconType] = useState("star-outline");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (item.hasPortfolio) {
@@ -17,30 +20,38 @@ const Item = ({ item, navigation }) => {
     }
   }, []);
 
-  const favoritePostFetch = async() => {
-    try{
-      const response = await addCurrency(item.id);
-      ToastAndroid.show(
-        `${item.code} para birimi portföye eklendi`,
-        ToastAndroid.SHORT
-      );
-    }
-    catch(error){
-      console.error("Favorite POST Error:", error);
-    }
+  const favoritePostFetch = async () => {
+    // try{
+    //   const response = await addCurrency(item.id);
+    // ToastAndroid.show(
+    //   `${item.code} para birimi portföye eklendi`,
+    //   ToastAndroid.SHORT
+    // );
+    // }
+    // catch(error){
+    //   console.error("Favorite POST Error:", error);
+    // }
+    dispatch(portfolioSlice.actions.addCurrency({
+      currencyId: item.id,
+      currencyCode: item.code,
+    }));
   };
 
-  const favoriteDeleteFetch = async() => {
-    try{
-      const response = await deleteCurrency(item.id);
-      ToastAndroid.show(
-        `${item.code} para birimi portföyden kaldırıldı`,
-        ToastAndroid.SHORT
-      );
-    }
-    catch(error){
-      console.error("Favorite POST Error:", error);
-    }
+  const favoriteDeleteFetch = async () => {
+    // try {
+    //   const response = await deleteCurrency(item.id);
+    //   ToastAndroid.show(
+    //     `${item.code} para birimi portföyden kaldırıldı`,
+    //     ToastAndroid.SHORT
+    //   );
+    // }
+    // catch (error) {
+    //   console.error("Favorite POST Error:", error);
+    // }
+    dispatch(portfolioSlice.actions.deleteCurrency({
+      currencyId: item.id,
+      currencyCode: item.code,
+    }));
   };
 
 

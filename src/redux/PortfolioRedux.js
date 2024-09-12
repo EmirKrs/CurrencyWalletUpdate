@@ -17,6 +17,8 @@ export const portfolioSlice = createSlice({
       */
       state.data = action.payload;
     },
+    addCurrency: (state, action) => {},
+    deleteCurrency: (state, action) => {},
     setLoading: (state, action) => {
       state.loading = action.payload;
     },

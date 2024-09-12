@@ -1,6 +1,7 @@
 import { call, fork, put, takeEvery } from "redux-saga/effects";
 import { portfolioSlice } from "./PortfolioRedux";
-import { portfolios } from "../api/services/portfolioService";
+import { addCurrency, deleteCurrency, portfolios } from "../api/services/portfolioService";
+import { ToastAndroid } from "react-native";
 
 /* 
   saga için generator function'ları oluştururken isimlendirme için watch/worker convention'ı var.
@@ -12,7 +13,13 @@ function* watchFetchPortfolioData() {
   yield takeEvery(portfolioSlice.actions.fetchPortfolioData, workerFetchPortfolioData)
 }
 
-// Portfolio ile ilgili başka watcher gerekirse buraya
+function* watchAddCurrency() {
+  yield takeEvery(portfolioSlice.actions.addCurrency, workerAddCurrency)
+}
+
+function* watchDeleteCurrency() {
+  yield takeEvery(portfolioSlice.actions.deleteCurrency, workerDeleteCurrency)
+}
 
 function* workerFetchPortfolioData(action) {
   yield put(portfolioSlice.actions.setLoading(true));
@@ -26,11 +33,34 @@ function* workerFetchPortfolioData(action) {
   }
 }
 
-// Portfolio ile ilgili başka worker gerekirse buraya
+function* workerAddCurrency(action) {
+  const { currencyId, currencyCode } = action.payload;
+  try {
+    yield call(addCurrency, currencyId);
+    ToastAndroid.show(
+      `${currencyCode} para birimi portföye eklendi`,
+      ToastAndroid.SHORT
+    );
+  } catch (error) {
+    console.error("Favorite POST Error:", error);
+  }
+}
+
+function* workerDeleteCurrency(action) {
+  const { currencyId, currencyCode } = action.payload;
+  try {
+    yield call(deleteCurrency, currencyId);
+    ToastAndroid.show(
+      `${currencyCode} para birimi portföyden kaldırıldı`,
+      ToastAndroid.SHORT
+    );
+  } catch (error) {
+    console.error("Favorite POST Error:", error);
+  }
+}
 
 export const portfolioSagas = [
   fork(watchFetchPortfolioData),
-  // portfolio ile ilgili bütün wathcherlar buraya aynı şekilde eklenir.
-  // fork(watchOtherAction),
-  // fork(watchAnotherAction),
+  fork(watchAddCurrency),
+  fork(watchDeleteCurrency),
 ]
