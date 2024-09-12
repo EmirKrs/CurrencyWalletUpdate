@@ -8,12 +8,16 @@ import Item from "./Components/item";
 import Header from "./Components/header";
 import Message from "./Components/Message";
 import useLoadingOverlay from "../../hooks/useLoadingOverlay";
+import { useDispatch, useSelector } from "react-redux";
+import { portfolioSlice } from "../../redux/PortfolioRedux";
 
 const Index = () => {
-  const [loading, setLoading] = useState(true);
-  const [portfolioData, setPortfolioData] = useState("");
+  // const [loading, setLoading] = useState(true);
+  // const [portfolioData, setPortfolioData] = useState("");
+  const { data: portfolioData, loading } = useSelector(state => state[portfolioSlice.name]);
+  const dispatch = useDispatch();
   useLoadingOverlay(loading);
-  
+
   useFocusEffect(
     useCallback(() => {
       fetchPortfolios();
@@ -21,15 +25,16 @@ const Index = () => {
   );
 
   const fetchPortfolios = async () => {
-    try {
-      setLoading(true);
-      const response = await portfolios();
-      setPortfolioData(response);
-    } catch (error) {
-      console.error("Fetch Portfolio: ", error);
-    } finally {
-    setLoading(false);
-    }
+    // try {
+    //   setLoading(true);
+    //   const response = await portfolios();
+    //   setPortfolioData(response);
+    // } catch (error) {
+    //   console.error("Fetch Portfolio: ", error);
+    // } finally {
+    // setLoading(false);
+    // }
+    dispatch(portfolioSlice.actions.fetchPortfolioData());
   };
 
   if (portfolioData && portfolioData.length <= 0) {
