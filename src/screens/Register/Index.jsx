@@ -19,8 +19,8 @@ import {
   validatePhone,
 } from "../../helpers/validationHelpers";
 //Components
-import InputAuth from "../../components/inputs/inputAuth";
-import ButtonAuth from "../../components/buttons/buttonAuth";
+import InputAuth from "../../components/inputs/InputAuth";
+import ButtonAuth from "../../components/buttons/ButtonAuth";
 
 const { width, height } = Dimensions.get("window");
 

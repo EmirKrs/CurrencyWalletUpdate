@@ -11,11 +11,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 //Components
 import Header from "./Components/Header";
-import InputProfile from "./Components/inputProfile";
-import ButtonProfile from "./Components/buttonProfile";
+import InputProfile from "./Components/InputProfile";
+import ButtonProfile from "./Components/ButtonProfile";
 import { userData, userUpdate } from "../../api/services/usersService";
 import { logout } from "../../api/services/authService";
 import useLoadingOverlay from "../../hooks/useLoadingOverlay";
+import TextButton from "../../components/buttons/TextButton";
 
 const Index = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -177,12 +178,12 @@ const Index = ({ navigation }) => {
             />
           </View>
 
-          <TouchableOpacity
-            style={styles.updateButton}
+          <TextButton
+            title="Güncelle"
             onPress={handleUpdateProfile}
-          >
-            <Text style={styles.updateText}>Güncelle</Text>
-          </TouchableOpacity>
+            color="#9BB8CD"
+            marginTop={0}
+          />
         </View>
 
         <View style={styles.buttonContainer}>
@@ -223,10 +224,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
     elevation: 4,
-  },
-  updateText: {
-    color: "#9BB8CD",
-    fontSize: 16,
   },
   inner: {
     flexGrow: 1,

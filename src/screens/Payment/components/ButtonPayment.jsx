@@ -6,6 +6,7 @@ const ButtonPayment = ({ title, color, onPress }) => {
     <>
       <TouchableOpacity
         onPress={onPress}
+        activeOpacity={0.7}
         style={[styles.button, { backgroundColor: color }]}
       >
         <Text style={styles.buttonTitle}>{title}</Text>

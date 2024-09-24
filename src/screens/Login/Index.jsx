@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { validateEmail } from "../../helpers/validationHelpers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//Components
-import InputAuth from "../../components/inputs/inputAuth";
-import ButtonAuth from "../../components/buttons/buttonAuth";
-import ForgotButton from "./components/forgotButton";
 import { login } from "../../api/services/authService";
+//Components
+import InputAuth from "../../components/inputs/InputAuth";
+import ButtonAuth from "../../components/buttons/ButtonAuth";
+import TextButton from "../../components/buttons/TextButton";
 
 const {width, height} = Dimensions.get('window');
 
@@ -115,9 +115,10 @@ const Index = ({ navigation }) => {
 
       <ButtonAuth title={"Kayıt"} onPress={handleRegister} color={"#FF7F3E"} />
 
-      <ForgotButton
+      <TextButton
         title={"Şifremi Unuttum"}
         color={"#FF7F3E"}
+        marginTop={20}
         onPress={handleForgotPassword}
       />
       </ScrollView>

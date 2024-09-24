@@ -2,8 +2,8 @@ import { View, StyleSheet, KeyboardAvoidingView, Image, ToastAndroid, Platform, 
 import React, { useState } from "react";
 import { approveCode } from "../../api/services/usersService";
 //Components
-import InputAuth from "../../components/inputs/inputAuth";
-import ButtonAuth from "../../components/buttons/buttonAuth";
+import InputAuth from "../../components/inputs/InputAuth";
+import ButtonAuth from "../../components/buttons/ButtonAuth";
 
 const ApproveCodeScreen = ({ navigation, route }) => {
   const { email } = route.params;
@@ -23,14 +23,10 @@ const ApproveCodeScreen = ({ navigation, route }) => {
       const encodedApproveCode = encodeURIComponent(codeText);
 
       const response = await approveCode(encodedApproveCode, encodedEmail);
-      console.log(response);
 
       if (response.isApproved) {
         ToastAndroid.show("Kod onaylandı", ToastAndroid.SHORT);
-        navigation.navigate("ResetPassword", {
-          email,
-          recoveryCode: response.recoveryCode,
-        });
+        navigation.navigate("ResetPassword", {email, recoveryCode: response.recoveryCode});
         setCodeText("");
       } else {
         ToastAndroid.show(`Lütfen geçerli kodu girin`, ToastAndroid.SHORT);
@@ -57,10 +53,7 @@ const ApproveCodeScreen = ({ navigation, route }) => {
 
         <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
 
-        <Text style={styles.content}>
-          {" "}
-          E-mail adresinize gelen 6 haneli onay kodunu girin{" "}
-        </Text>
+        <Text style={styles.content}>E-mail adresinize gelen 6 haneli onay kodunu girin</Text>
 
         <InputAuth
           label={"Onay Kodu"}
@@ -93,6 +86,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "30%",
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  logo: {
+    width: "40%",
+    resizeMode: "contain",
+    backgroundColor: "#FFFFFF",
+  },
   title: {
     color: "#000",
     fontSize: 28,
@@ -105,19 +111,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginHorizontal: 50,
-  },
-  logo: {
-    width: "40%",
-    resizeMode: "contain",
-    backgroundColor: "#FFFFFF",
-  },
-  logoContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: "30%",
-    marginTop: 30,
-    marginBottom: 10,
   },
 });
 

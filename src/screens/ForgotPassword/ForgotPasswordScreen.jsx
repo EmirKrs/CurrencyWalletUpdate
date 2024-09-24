@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, ToastAndroid, Image, KeyboardAvoidingView, Platform, ScrollView,} from "react-native";
 import React, { useState } from "react";
 //Components
-import InputAuth from "../../components/inputs/inputAuth";
-import ButtonAuth from "../../components/buttons/buttonAuth";
+import InputAuth from "../../components/inputs/InputAuth";
+import ButtonAuth from "../../components/buttons/ButtonAuth";
 import { forgotPassword } from "../../api/services/usersService";
 
 const ForgotPasswordScreen = ({ navigation }) => {
@@ -12,18 +12,13 @@ const ForgotPasswordScreen = ({ navigation }) => {
     try {
       const encodedEmail = encodeURIComponent(email);
       const statusCode = await forgotPassword(encodedEmail);
+      console.log(statusCode);
       if (statusCode == 200) {
-        ToastAndroid.show(
-          "Doğrulama kodu mail adresinize gönderildi",
-          ToastAndroid.SHORT
-        );
+        ToastAndroid.show("Doğrulama kodu mail adresinize gönderildi",ToastAndroid.SHORT);
         navigation.navigate("ApproveCode", { email });
         setEmail("");
       } else {
-        ToastAndroid.show(
-          "Lütfen geçerli bir E-mail adresi giriniz",
-          ToastAndroid.SHORT
-        );
+        ToastAndroid.show("Lütfen geçerli bir E-mail adresi giriniz",ToastAndroid.SHORT);
       }
       return;
     } catch (error) {
@@ -58,10 +53,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
         <Text style={styles.title}>ŞİFRENİZİ Mİ UNUTTUNUZ</Text>
 
-        <Text style={styles.content}>
-          E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol
-          edin
-        </Text>
+        <Text style={styles.content}>E-mail adresinizi girdikten sonra mailinize gelen onay kodunu kontrol edin</Text>
 
         <InputAuth
           label={"E-mail"}
@@ -90,6 +82,19 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#FFFFFF",
   },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    marginBottom: 10,
+    width: "100%",
+    height: "30%",
+  },
+  logo: {
+    width: "40%",
+    resizeMode: "contain",
+    backgroundColor: "#FFFFFF",
+  },
   title: {
     color: "#000",
     fontSize: 28,
@@ -102,19 +107,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginHorizontal: 50,
-  },
-  logo: {
-    width: "40%",
-    resizeMode: "contain",
-    backgroundColor: "#FFFFFF",
-  },
-  logoContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 30,
-    marginBottom: 10,
-    width: "100%",
-    height: "30%",
   },
 });
 

@@ -2,10 +2,8 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { formatNumber } from "../../../utils/numberUtils";
 
-const Item = ({ item}) => {
-
+const Item = ({ item }) => {
   return (
-
     <View style={styles.card}>
       <View style={styles.titleContainer}>
         <Text style={styles.currencyCode}>{item.currencyCode} ({item.currencySymbol})</Text>
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "column",
-    width: '33%',
+    width: "33%",
   },
   currencyCode: {
     fontSize: 16,
@@ -66,7 +64,7 @@ const styles = StyleSheet.create({
   contentTitle: {
     fontSize: 14,
     marginBottom: 4,
-    fontWeight: '500',
+    fontWeight: "500",
     color: "#000000",
     textAlign: "center",
     width: "25%",

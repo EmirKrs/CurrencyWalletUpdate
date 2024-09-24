@@ -7,11 +7,8 @@ const Message = () => {
       <Image
         source={require("../../../../assets/sad.png")}
         style={styles.image}/>
-
       <View style={styles.textContainer}>
-        <Text style={styles.message}>
-          Portfolyonuzda döviz bulunmamaktadır
-        </Text>
+        <Text style={styles.message}>Portfolyonuzda döviz bulunmamaktadır</Text>
       </View>
     </View>
   );
@@ -30,7 +27,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   image: {
-    marginTop: 50,
+    marginTop: 80,
     height: "20%",
     resizeMode: "contain",
   },

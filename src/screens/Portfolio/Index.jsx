@@ -2,18 +2,17 @@ import { View, StyleSheet, FlatList } from "react-native";
 import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { portfolios } from "../../api/services/portfolioService";
-
-//Components
-import Item from "./Components/item";
-import Header from "./Components/header";
-import Message from "./Components/Message";
 import useLoadingOverlay from "../../hooks/useLoadingOverlay";
+//Components
+import Item from "./Components/Item";
+import Header from "./Components/Header";
+import Message from "./Components/Message";
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
   const [portfolioData, setPortfolioData] = useState("");
   useLoadingOverlay(loading);
-  
+
   useFocusEffect(
     useCallback(() => {
       fetchPortfolios();
@@ -28,7 +27,7 @@ const Index = () => {
     } catch (error) {
       console.error("Fetch Portfolio: ", error);
     } finally {
-    setLoading(false);
+      setLoading(false);
     }
   };
 

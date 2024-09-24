@@ -2,12 +2,12 @@ import { View, StyleSheet, ToastAndroid, FlatList, Text,} from "react-native";
 import React, { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { wallet, walletIsExist } from "../../api/services/walletService";
+import useLoadingOverlay from "../../hooks/useLoadingOverlay";
 //Components
 import WalletCard from "./components/WalletCard";
-import ButtonCard from "./components/buttonCard";
-import Item from "./components/item";
-import useLoadingOverlay from "../../hooks/useLoadingOverlay";
-import { StatusBar } from "expo-status-bar";
+import ButtonCard from "./components/ButtonCard";
+import Item from "./components/Item";
+
 
 
 const Index = ({ navigation }) => {
@@ -74,7 +74,7 @@ const Index = ({ navigation }) => {
           onPress={handleAddMoney}
         />
         <ButtonCard
-          title={"Çek"}
+          title={"Gönder"}
           icon={"arrow-down"}
           backgroundColor={"#D37676"}
           onPress={handleWithdrawMoney}

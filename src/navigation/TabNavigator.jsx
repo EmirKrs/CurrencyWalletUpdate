@@ -12,6 +12,7 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarHideOnKeyboard:true,
         headerTitleAlign: "center",
         headerTitleStyle:{color: '#000', fontSize: 22, fontWeight: '400'},
         tabBarActiveTintColor: "#FF7F3E",

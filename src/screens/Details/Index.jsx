@@ -2,7 +2,7 @@ import { View, StyleSheet, SafeAreaView, ActivityIndicator, FlatList, ToastAndro
 import React, { useEffect, useState } from "react";
 //Components
 import ModalComponent from "./Components/modal";
-import DetailItem from "./Components/detailItem";
+import DetailItem from "./Components/DetailItem";
 import Header from "./Components/Header";
 import ButtonForm from "./Components/ButtonForm";
 import Chart from "./Components/Chart";

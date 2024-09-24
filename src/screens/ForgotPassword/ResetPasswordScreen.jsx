@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { CommonActions } from "@react-navigation/native";
 import { resetPassword } from "../../api/services/usersService";
 //Components
-import InputAuth from "../../components/inputs/inputAuth";
-import ButtonAuth from "../../components/buttons/buttonAuth";
+import InputAuth from "../../components/inputs/InputAuth";
+import ButtonAuth from "../../components/buttons/ButtonAuth";
 
 const ResetPasswordScreen = ({ navigation, route }) => {
   const [newPassword, setNewPassword] = useState("");
@@ -61,9 +61,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
 
         <Text style={styles.title}>YENİ ŞİFRE OLUŞTURUNUZ</Text>
 
-        <Text style={styles.content}>
-          Oluşturduğunuz yeni şifreyi aşağıdaki alana girebilirsiniz
-        </Text>
+        <Text style={styles.content}>Oluşturduğunuz yeni şifreyi aşağıdaki alana girebilirsiniz</Text>
 
         <InputAuth
           label={"Yeni Şifre"}
@@ -99,6 +97,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
   },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "30%",
+    marginVertical: 10,
+  },
+  logo: {
+    width: "40%",
+    resizeMode: "contain",
+    backgroundColor: "#FFFFFF",
+  },
   title: {
     color: "#000",
     fontSize: 28,
@@ -111,18 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginHorizontal: 30,
-  },
-  logo: {
-    width: "40%",
-    resizeMode: "contain",
-    backgroundColor: "#FFFFFF",
-  },
-  logoContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: "30%",
-    marginVertical: 10,
   },
 });
 
