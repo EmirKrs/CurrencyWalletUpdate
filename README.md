@@ -13,21 +13,6 @@ The purpose of this project is to enable users to create their own wallet accoun
 
 ---
 
-## 📸 Screenshots  
-| Login | Register | Currency | 
-|----------|----------|----------| 
-| ![Login](./screenshots/login.png) | ![Register](./screenshots/register.png) | ![Currency](./screenshots/currency.png) |
-
-| Detail | Exchange | Portfolio |
-|----------|----------|----------|  
-| ![Detail](./screenshots/detail.png) | ![Exchange](./screenshots/exchange.png) | ![Portfolio](./screenshots/portfolio.png) | 
-
-| Wallet | Payment | Profile |  
-|----------|----------|----------| 
-| ![Wallet](./screenshots/wallet.png) | ![Payment](./screenshots/payment.png) | ![Profile](./screenshots/profile.png) |  
-
----
-
 ## 🚀 Installation and Running  
 To run the project on your local machine, follow the steps below:
 
@@ -41,3 +26,18 @@ To run the project on your local machine, follow the steps below:
    npm install
    #or
    yarn install
+
+   ---
+
+## 📸 Screenshots  
+| Login | Register | Currency | 
+|----------|----------|----------| 
+| ![Login](./screenshots/login.png) | ![Register](./screenshots/register.png) | ![Currency](./screenshots/currency.png) |
+
+| Detail | Exchange | Portfolio |
+|----------|----------|----------|  
+| ![Detail](./screenshots/detail.png) | ![Exchange](./screenshots/exchange.png) | ![Portfolio](./screenshots/portfolio.png) | 
+
+| Wallet | Payment | Profile |  
+|----------|----------|----------| 
+| ![Wallet](./screenshots/wallet.png) | ![Payment](./screenshots/payment.png) | ![Profile](./screenshots/profile.png) |  
