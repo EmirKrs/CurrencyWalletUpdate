@@ -27,7 +27,7 @@ To run the project on your local machine, follow the steps below:
    #or
    yarn install
 
-   ---
+---
 
 ## 📸 Screenshots  
 | Login | Register | Currency | 
