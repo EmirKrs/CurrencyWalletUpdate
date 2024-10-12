@@ -14,7 +14,17 @@ The purpose of this project is to enable users to create their own wallet accoun
 ---
 
 ## 🚀 Installation and Running  
+
 To run the project on your local machine, follow the steps below:
+
+### Prerequisites
+
+Before running your project, make sure you have the following software installed:
+
+- **Node.js**
+- **Expo CLI**
+
+### Steps
 
 1. **Clone the project:**  
    ```bash
@@ -27,6 +37,12 @@ To run the project on your local machine, follow the steps below:
    #or
    yarn install
 
+3. **Start the Project:**  
+   ```bash
+   npx expo start --android
+   #or
+   npx expo start --ios
+   
 ---
 
 ## 📸 Screenshots  
